@@ -7,7 +7,7 @@ headers = {
     'content-type': 'application/json',
 }
 
-data = '{"query":"from: chicagotribune lang:en",\
+data = '{"query":"from: chicagotribune OR Chicago_Reader lang:en",\
         "maxResults": "10",\
         "fromDate":"201802010000",\
         "toDate":"201802282359"}'
@@ -15,4 +15,4 @@ data = '{"query":"from: chicagotribune lang:en",\
 response = requests.post('https://api.twitter.com/1.1/tweets/search/fullarchive/test.json', headers=headers, data=data)
 
 response_output = response.json()
-# print(response_output)
+print(response_output)
