@@ -34,6 +34,7 @@ bill_num = 'HB3493'
 response = requests.post('https://api.twitter.com/1.1/tweets/search/fullarchive/test.json', headers=headers, data=data_str)
 
 response_output = response.json()
+users_dict_keys = ['id', 'name','screen_name', 'location', 'url', 'description']
 
 for tweet in response_output['results']:
     id = tweet['id']
@@ -48,6 +49,9 @@ for tweet in response_output['results']:
 
     if bill_num not in users_dict.keys():
         users_dict[bill_num] = []
-    users_dict[bill_num].append(tweet['user'])
+    user_dict = {key: tweet['user'][key] for key in users_dict_keys}
+    users_dict[bill_num].append(user_dict)
+
     if 'retweeted_status' in tweet.keys():
-        users_dict[bill_num].append(tweet['retweeted_status']['user'])
+        rt_user_dict = {key: tweet['retweeted_status']['user'][key] for key in users_dict_keys}
+        users_dict[bill_num].append(rt_user_dict)
