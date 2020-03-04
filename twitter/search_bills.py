@@ -38,11 +38,11 @@ def call_twitter_api(bill_query_str, next=False):
         'authorization': credentials.TWITTER_HEADER_AUTH,
         'content-type': 'application/json',
     }
-    data = '{{"query": "{} place:Illinois lang:en",\
+    data = '{{"query": "({}) lang:en",\
             "maxResults":"100"}}'.format(bill_query_str)
 
     if next:
-        data = '{{"query": "{} place:Illinois lang:en",\
+        data = '{{"query": "({})  lang:en",\
                 "maxResults":"100", "next"}}'.format(bill_query_str)
 
     response = requests.post(twitter_api, headers=headers, data=data)
