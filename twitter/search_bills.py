@@ -29,25 +29,24 @@ def find_active_bills(bill_info_file):
 
     return list(active_bills.keys())
 
-def call_twitter_api(bill_num_list, bill_query_str):
+def call_twitter_api(bill_query_str):
     '''
     '''
-    twitter_api = 'https://api.twitter.com/1.1/tweets/search/fullarchive/test.json'
+    twitter_api = 'https://api.twitter.com/1.1/tweets/search/30day/prod.json'
 
     headers = {
         'authorization': credentials.TWITTER_HEADER_AUTH,
         'content-type': 'application/json',
     }
 
-    data = '{{"query": "{} place: Illinois lang:en",\
+    data = '{{"query": "{} place:Illinois lang:en",\
                 "maxResults":"100"}}'.format(bill_query_str)
 
     response = requests.post(twitter_api, headers=headers, data=data)
 
-    print(response.ok)
     response.raise_for_status()
 
-    response_output = response.json()
+    return response.json()
 
 
 def update_tweet_dict(tweet_json, bill_num, tweet_dict):
@@ -60,8 +59,9 @@ def update_tweet_dict(tweet_json, bill_num, tweet_dict):
 
     tweet = {key: tweet_json[key] for key in tweet_dict_keys}
     tweet['user'] = tweet_json['user']['name']
-    if tweet_json['entities']['urls']:
-        tweet['url'] = tweet['entities']['urls'][0]['url']
+    if tweet_json['entities']:
+        if tweet_json['entities']['urls']:
+            tweet['url'] = tweet_json['entities']['urls'][0]['url']
 
     tweet_dict[bill_num].append(tweet)
 
@@ -73,11 +73,11 @@ def update_users_dict(tweet_json, bill_num, users_dict):
     if bill_num not in users_dict.keys():
         users_dict[bill_num] = []
 
-    user_dict = {key: tweet['user'][key] for key in users_dict_keys}
+    user_dict = {key: tweet_json['user'][key] for key in users_dict_keys}
     users_dict[bill_num].append(user_dict)
 
-    if 'retweeted_status' in tweet.keys():
-        rt_user_dict = {key: tweet['retweeted_status']['user'][key] for key in users_dict_keys}
+    if 'retweeted_status' in tweet_json.keys():
+        rt_user_dict = {key: tweet_json['retweeted_status']['user'][key] for key in users_dict_keys}
         users_dict[bill_num].append(rt_user_dict)
 
 def search_bills(bill_info_file):
@@ -87,13 +87,15 @@ def search_bills(bill_info_file):
     users_dict = {}
     bill_nums = find_active_bills(bill_info_file)
 
-    for i, b in enumerate(bill_nums[:4]):
-        if i % 12 == 0:  # rate limit = 12 rpm
+    for i, b in enumerate(bill_nums[:100]):
+        if i != 0 and i % 12 == 0:  # rate limit = 12 rpm
             time.sleep(60)
         query_bill_str = '{} OR #{} '.format(b, b)
         tweets = call_twitter_api(query_bill_str)
 
-        if tweetss['results']:
+        if tweets['results']:
             for t in tweets['results']:
                 update_tweet_dict(t, b, tweet_dict)
                 update_users_dict(t, b, users_dict)
+
+    return (tweet_dict, users_dict)
