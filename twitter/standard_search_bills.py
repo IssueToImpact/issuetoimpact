@@ -6,6 +6,7 @@ from datetime import datetime
 import credentials
 
 
+
 def find_active_bills(bill_info_file):
     '''
     Generate list of bill numbers for bills that are active (have a committee
@@ -30,54 +31,27 @@ def find_active_bills(bill_info_file):
 
     return list(active_bills.keys())
 
-def call_twitter_api(bill_query_str, next=False):
+def call_standard_twitter_api(bill_query_str):
     '''
     '''
-    twitter_api = 'https://api.twitter.com/1.1/tweets/search/30day/prod.json'
+    twitter_standard_api = 'https://api.twitter.com/1.1/search/tweets.json'
 
     headers = {
         'authorization': credentials.TWITTER_HEADER_AUTH,
         'content-type': 'application/json'
     }
 
-    data = '{{"query": "({}) lang:en",\
-            "maxResults":"100"}}'.format(bill_query_str)
-
-    response = requests.post(twitter_api, headers=headers, data=data)
-
+    data = {"q": "({}) lang:en".format(bill_query_str),\
+                "maxResults":"100"}
+    response = requests.get(twitter_standard_api, headers=headers, params=data)
     response.raise_for_status()
     return response.json()
-
-
-def search_bills(bill_info_file):
-    '''
-    '''
-    tweet_dict = {}
-    users_dict = {}
-    bill_nums = find_active_bills(bill_info_file)
-
-    for i, b in enumerate(bill_nums):
-        if i != 0 and i % 12 == 0:  # rate limit = 12 rpm
-            print('sleeping...')
-            time.sleep(60)
-
-        query_bill_str = '{} OR #{} '.format(b, b)
-
-        tweets = call_twitter_api(query_bill_str)
-        get_data_from_tweet(tweets, b, tweet_dict, users_dict)
-
-        while 'next' in tweets:
-            tweets = call_twitter_api(query_bill_str)
-            get_data_from_tweet(tweets, b, tweet_dict, users_dict)
-
-    return (tweet_dict, users_dict)
-
 
 def get_data_from_tweet(tweets, bill_num, tweet_dict, users_dict):
     '''
     '''
-    if tweets['results']:
-        for t in tweets['results']:
+    if tweets['statuses']:
+        for t in tweets['statuses']:
             update_tweet_dict(t, bill_num, tweet_dict)
             update_users_dict(t, bill_num, users_dict)
 
@@ -99,7 +73,7 @@ def update_tweet_dict(tweet_json, bill_num, tweet_dict):
 def update_users_dict(tweet_json, bill_num, users_dict):
     '''
     '''
-    users_dict_keys = ['name','screen_name', 'location', 'url', 'description']
+    users_dict_keys = ['name','screen_name', 'location', 'description']
 
     if bill_num not in users_dict:
         users_dict[bill_num] = {}
@@ -112,6 +86,33 @@ def update_users_dict(tweet_json, bill_num, users_dict):
     else:
         users_dict[bill_num][user_id]['count'] += 1
 
-# should we use tag 'is_verified' - will that give us just organisations?
+def save_to_json_file(dict, output_filename):
+    '''
+    '''
+    with open(output_filename) as output_file:
+        json.dump(tweet_dict, output_filename)
 
-# do we want to include retweet users?
+
+def search_bills(bill_info_file, tweet_json_filename, users_json_filename):
+    '''
+    '''
+    tweet_dict = {}
+    users_dict = {}
+    bill_nums = find_active_bills(bill_info_file)
+
+    for i, b in enumerate(bill_nums):
+        if i != 0 and i % 12 == 0:  # rate limit = 12 rpm
+            print('sleeping...')
+            time.sleep(60)
+
+        query_bill_str = '{} OR #{} '.format(b, b)
+
+        tweets = call_standard_twitter_api(query_bill_str)
+        get_data_from_tweet(tweets, b, tweet_dict, users_dict)
+
+        while 'next' in tweets:
+            tweets = call_twitter_api(query_bill_str)
+            get_data_from_tweet(tweets, b, tweet_dict, users_dict)
+
+    save_to_json_file(tweet_dict, tweet_json_filename)
+    save_to_json_file(users_dict, users_json_filename)
