@@ -11,5 +11,4 @@ data = {"query":'{people(latitude: 41.937972898282275, longitude: -87.6451597558
 
 open_states_api = 'https://openstates.org/graphql'
 
-response = requests.get(open_states_api, params=data, headers=headers)
 response.json()

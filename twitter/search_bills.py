@@ -5,6 +5,8 @@ from datetime import datetime
 
 import credentials
 
+
+
 def find_active_bills(bill_info_file):
     '''
     Generate list of bill numbers for bills that are active (have a committee
@@ -28,6 +30,7 @@ def find_active_bills(bill_info_file):
                                               '%m/%d/%Y') >= date_since}
 
     return list(active_bills.keys())
+
 
 def call_twitter_api(bill_query_str, next=False):
     '''
@@ -58,7 +61,7 @@ def search_bills(bill_info_file):
     users_dict = {}
     bill_nums = find_active_bills(bill_info_file)
 
-    for i, b in enumerate(bill_nums[:4]):
+    for i, b in enumerate(bill_nums):
         if i != 0 and i % 12 == 0:  # rate limit = 12 rpm
             print('sleeping...')
             time.sleep(60)
@@ -94,10 +97,7 @@ def update_tweet_dict(tweet_json, bill_num, tweet_dict):
     if tweet_id not in tweet_dict[bill_num]:
         tweet = {key: tweet_json[key] for key in ['text', 'created_at']}
         tweet['user'] = tweet_json['user']['name']
-
-    if tweet_json['entities']:
-        if tweet_json['entities']['urls']:
-            tweet['url'] = tweet_json['entities']['urls'][0]['url']
+        tweet['url'] = twitter_url = 'https://twitter.com/{}/status/{}'.format(tweet_json['user']['screen_name'], tweet_id)
 
     tweet_dict[bill_num][tweet_id] = tweet
 
