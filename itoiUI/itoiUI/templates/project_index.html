@@ -44,35 +44,20 @@
     </nav>
     <!--/.Navbar-->
 
-    <!--Mask-->
-    <div id="intro" class="view">
 
-        <div class="mask rgba-black-strong">
+    <div class="jumbotron jumbotron-fluid" id="jumbo">
+      <div class="container">
+        <!-- Heading -->
+        <h2 class="display-4 font-weight-bold white-text pt-5 mb-2">Issue to Impact</h2>
 
-            <div class="container-fluid d-flex align-items-center justify-content-center h-100">
+        <!-- Divider -->
+        <hr class="hr-light">
 
-                <div class="row d-flex justify-content-center text-center">
+        <!-- Description -->
+        <h4 class="white-text my-4">Let your state representatives know how you feel!</h4>
 
-                    <div class="col-md-10">
-
-                        <!-- Heading -->
-                        <h2 class="display-4 font-weight-bold white-text pt-5 mb-2">Issue to Impact</h2>
-
-                        <!-- Divider -->
-                        <hr class="hr-light">
-
-                        <!-- Description -->
-                        <h4 class="white-text my-4">Let your state representatives know how you feel!</h4>
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
+      </div>
     </div>
-    <!--/.Mask-->
 
 </header>
 <!--Main Navigation-->
@@ -125,15 +110,15 @@
               <div class="card">
 
                 <!-- Card header --> <div class="card-header" role="tab"
-                id="headingOne1"> <a data-toggle="collapse"
-                data-parent="#accordionEx" href="#collapseOne1"
-                aria-expanded="true" aria-controls="collapseOne1"> <h5
+                id="heading{{ forloop.counter }}"> <a data-toggle="collapse"
+                data-parent="#accordionEx" href="#collapse{{ forloop.counter }}"
+                aria-expanded="true" aria-controls="collapse{{ forloop.counter }}"> <h5
                 class="mb-0"> {{ project.title }}<i class="fas
                 fa-angle-down rotate-icon"></i> </h5> </a> </div>
 
                 <!-- Card body -->
-                <div id="collapseOne1" class="collapse show"
-                role="tabpanel" aria-labelledby="headingOne1" data-parent="#accordionEx">
+                <div id="collapse{{ forloop.counter }}" class="collapse show"
+                role="tabpanel" aria-labelledby="heading{{ forloop.counter }}" data-parent="#accordionEx">
                 <div class="card-body"> {{ project.description }}</div> </div>
 
               </div> <!-- Accordion card -->
