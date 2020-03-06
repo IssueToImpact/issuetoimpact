@@ -1,10 +1,6 @@
 import requests
 from geopy.geocoders import Nominatim
 
-REP_CONTACT_DEFAULT = {"name": '',
-               "chamber": '',
-               "contact_details": {}}
-
 def calculate_lat_long_from_address(address_string):
     '''
     '''
@@ -55,9 +51,10 @@ def process_openstates_response(openstates_response):
     '''
     representatives = {}
     for person in openstates_response["data"]["people"]["edges"]:
-        rep_dict = REP_CONTACT_DEFAULT
+        rep_dict = {}
         rep_dict['name'] = person["node"]["name"]
         rep_dict['chamber'] = person["node"]["chamber"][0]["organization"]["name"]
+        rep_dict['contact_details'] = {}
         for contact in person["node"]["contact"]:
             rep_dict['contact_details'][contact["type"]] = contact["value"]
         representatives[rep_dict['name']] = rep_dict
