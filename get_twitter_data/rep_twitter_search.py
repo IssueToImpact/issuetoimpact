@@ -31,7 +31,7 @@ def update_reps_dict(tweet_json, reps_name, rep_handle, reps_dict):
     tweet = {}
     tweet_id = tweet_json['id']
     if tweet_id not in reps_dict[rep]['tweets']:
-        tweet['text'] = tweet_json['text']
+        tweet['text'] = tweet_json['full_text']
         tweet['url'] = twitter_url = 'https://twitter.com/{}/status/{}'.format(tweet_json['user']['screen_name'], tweet_id)
         reps_dict[rep]['tweets'][tweet_id] = tweet
 

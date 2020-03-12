@@ -15,8 +15,10 @@ def call_standard_twitter_api(query_str):
     }
 
     data = {"q": "{} lang:en".format(query_str),\
-                "maxResults":"100"}
-    response = requests.get(twitter_standard_api, headers=headers, params=data)
+            "maxResults":"100",
+            "geocode": "40.005785,-88.429983,250mi",
+            "tweet_mode": "extended"}
+    response = requests.get(twitter_standard_api, headers=headers, params=data) # check this works!
     response.raise_for_status()
 
     return response.json()

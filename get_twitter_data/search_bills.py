@@ -79,7 +79,7 @@ def search_bill_tweets(bill_info_file, tweet_json_file, users_json_file):
 
     active_bills = find_active_bills(bill_info_file)
     for i, bill_num in enumerate(active_bills):
-        tweets_json = twitter_search(bill_num, i, True)
+        tweets_json = twitter_search(bill_num, i, 'bills', True)
         if not tweets_json:
             break
         get_data_from_tweet(tweets_json, bill_num, tweet_dict, users_dict)
