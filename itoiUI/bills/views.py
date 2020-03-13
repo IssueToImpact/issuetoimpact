@@ -14,3 +14,10 @@ def project_detail(request, pk):
         'project': project
     }
     return render(request, 'project_detail.html', context)
+
+from bills.filters import ProjectFilter
+
+def project_list(request):
+	projects = Project.object.all()
+	filter = ProjectFilter(request.GET, queryset = projects)
+	return render(request, 'itoiUI/templates/project_index.html', {'filter' : filter})

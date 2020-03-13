@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'ui',
     'bills',
-    'bootstrap4'
+    'bootstrap4',
+    'django_filters',
 ]
 
 MIDDLEWARE = [

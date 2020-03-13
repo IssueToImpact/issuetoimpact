@@ -143,7 +143,13 @@
 
             <!--Grid row-->
             <div class="row">
-
+              <form method="get">
+                  {{ filter.form.as_p }}
+                  <input type="submit" />
+              </form>
+              {% for obj in filter.qs %}
+                  {{ obj.title }}  ${{ obj.description }}<br />
+              {% endfor %}
 
                 <!--Grid column-->
 
@@ -195,7 +201,7 @@
                         <!--Grid column-->
                         <div class="col-lg-4 col-md-6 mb-3">
 
-                          
+
                         </div>
                         <!--Grid column-->
 

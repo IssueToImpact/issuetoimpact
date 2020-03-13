@@ -1,4 +1,5 @@
 from django.db import models
+from django_filters import FilterSet
 
 class Project(models.Model):
     title = models.CharField(max_length=100)
