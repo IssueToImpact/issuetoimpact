@@ -44,7 +44,7 @@ def update_tweet_dict(tweet_json, bill_num, tweet_dict):
 
     tweet_id = tweet_json['id']
     if tweet_id not in tweet_dict[bill_num]:
-        tweet = {key: tweet_json[key] for key in ['text', 'created_at']}
+        tweet = {key: tweet_json[key] for key in ['full_text', 'created_at']}
         tweet['user'] = tweet_json['user']['name']
         tweet['url'] = twitter_url = 'https://twitter.com/{}/status/{}'.format(tweet_json['user']['screen_name'], tweet_id)
         tweet_dict[bill_num][tweet_id] = tweet
