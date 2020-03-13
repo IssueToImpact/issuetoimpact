@@ -105,47 +105,8 @@
             <!-- Heading -->
             <h2 class="mb-5 font-weight-bold">What bills are being discussed?</h2>
 
-            <!--Accordion wrapper-->
-            <div class="accordion md-accordion" id="accordionEx" role="tablist" aria-multiselectable="true">
-
-          {% for project in projects %}
-              <!-- Accordion card -->
-              <div class="card">
-
-                <!-- Card header --> <div class="card-header" role="tab"
-                id="heading{{ forloop.counter }}"> <a data-toggle="collapse"
-                data-parent="#accordionEx" href="#collapse{{ forloop.counter }}"
-                aria-expanded="true" aria-controls="collapse{{ forloop.counter }}"> <h5
-                class="mb-0"> {{ project.title }}<i class="fas
-                fa-angle-down rotate-icon"></i> </h5> </a> </div>
-
-                <!-- Card body -->
-                <div id="collapse{{ forloop.counter }}" class="collapse show"
-                role="tabpanel" aria-labelledby="heading{{ forloop.counter }}" data-parent="#accordionEx">
-                <div class="card-body"> {{ project.description }}</div> </div>
-
-              </div> <!-- Accordion card -->
-          {% endfor %}
-</div> <!-- Accordion wrapper -->
-
-            <!--Grid row-->
-
-        </section>
-        <!--Section: Examples-->
-
-        <hr class="my-5">
-
-        <!--Section: Gallery-->
-        <section id="rep">
-
-            <!-- Heading -->
-            <h2 class="mb-5 font-weight-bold text-center">Find my Rep</h2>
-
             <!--Grid row-->
             <div class="row">
-              <div id="header">
-                   <h1>Bill Search</h1>
-               </div>
                <div class="frame">
                    <form method="get">
                        {% csrf_token %}
@@ -168,19 +129,19 @@
                    {{ err|safe }}
                </div>
                {% endif %}
-
+<!--
 
 
                <div class="frame">
                    {% if result != None %}
                    <div class="results">
                        <table class="courses">
-                           <tr>
-                               {% for col in columns %}
+                           <!-- <tr> -->
+                               <!-- {% for col in columns %}
                                <th>{{ col }}</th>
                                {% endfor %}
-                           </tr>
-                           {% for entry in result %}
+                           </tr> -->
+                           <!-- {% for entry in result %}
                            <tr>
                                {% for col in entry %}
                                <td>{{ col }}</td>
@@ -191,7 +152,65 @@
                    </div>
                    <p class="num_results">Results: {{ num_results }}</p>
                    {% endif %}
-               </div>
+               </div> -->
+
+
+
+            <!--Accordion wrapper-->
+            <div class="accordion md-accordion" id="accordionEx" role="tablist" aria-multiselectable="true">
+          {% if result != None %}
+          {% for entry in result %}
+              <!-- Accordion card -->
+              <div class="card">
+
+                <!-- Card header --> <div class="card-header" role="tab"
+                id="heading{{ forloop.counter }}"> <a data-toggle="collapse"
+                data-parent="#accordionEx" href="#collapse{{ forloop.counter }}"
+                aria-expanded="true" aria-controls="collapse{{ forloop.counter }}"> <h5
+                class="mb-0"> {{ entry.synopsis }}<i class="fas
+                fa-angle-down rotate-icon"></i> </h5> </a> </div>
+
+                <!-- Card body -->
+                <div id="collapse{{ forloop.counter }}" class="collapse show"
+                role="tabpanel" aria-labelledby="heading{{ forloop.counter }}" data-parent="#accordionEx">
+                <div class="card-body">
+                  <table class="bills">
+                    <tr>
+                      {% for col in columns %}
+                          <th>{{ col }}</th>
+                          {% endfor %}
+                      </tr>
+                      <tr>
+                          {% for col in entry %}
+                          <td>{{ col }}</td>
+                          {% endfor %}
+                      </tr>
+                  </table>
+                  </div>
+                </div>
+
+              </div> <!-- Accordion card -->
+          {% endfor %}
+          <!-- </table> -->
+          </div>
+          <p class="num_results">Results: {{ num_results }}</p>
+          {% endif %}
+</div> <!-- Accordion wrapper -->
+
+            <!--Grid row-->
+
+        </section>
+        <!--Section: Examples-->
+
+        <hr class="my-5">
+
+        <!--Section: Gallery-->
+        <section id="rep">
+
+            <!-- Heading -->
+            <h2 class="mb-5 font-weight-bold text-center">Find my Rep</h2>
+
+
 
 
                 <!--Grid column-->
