@@ -3,12 +3,14 @@ import os
 
 
 # Use this filename for the database
-#DATA_DIR = ''
-#DATABASE_FILENAME = os.path.join(DATA_DIR, 'course_information.sqlite3')
-DATABASE_FILENAME = 'db.sqlite3'
+# DATA_DIR = ''
+# DATABASE_FILENAME = os.path.join(DATA_DIR, 'IssuetoImpact.db')
+DATA_DIR = os.path.dirname(__file__)
+DATABASE_FILENAME = os.path.join(DATA_DIR, '../IssuetoImpact.db')
 
 
-ARG_INFO = {'terms': {'table': 'catalog_index'},
+
+ARG_INFO = {'terms': {'table': 'bill_keywords'},
             'topic': {'table': 'bills'}}
 
 
@@ -36,8 +38,8 @@ def find_bills(args_from_ui):
 
     query, arg_tuple = generate_query(args_from_ui)
     print(query)
+    query = 'FROM bill_keywords SELECT *'
     print(arg_tuple)
-
     r = c.execute(query, arg_tuple)
     results = r.fetchall()
     header = get_header(c)
@@ -69,7 +71,7 @@ def generate_query(args_from_ui):
                      + ' ON ' + ' AND '.join(on_lst) \
 
     if where_conds:
-        query_string += ' WHERE ' + ' AND '.join(where_conds)
+        query_string += 'WHERE ' + ' AND '.join(where_conds)
 
     return (query_string, tuple(query_args))
 
@@ -155,7 +157,7 @@ def generate_terms_subquery(val):
     FROM (SELECT bill_keywords.bill_number, count(*) as num_words \
           FROM bill_keywords \
           WHERE bill_keywords.keyword in ({}) \
-          GROUP BY bill_keywords.course_id) \
+          GROUP BY bill_keywords.bill_number) \
     WHERE num_words = ?)'''.format(', '.join(['?']* len(val)))
 
     return (query, query_args)

@@ -1,3 +1,6 @@
+import traceback
+import os
+import sys
 from functools import reduce
 from operator import and_
 
@@ -84,6 +87,7 @@ def home(request):
                 res = find_bills(args)
             except Exception as e:
                 print('Exception caught')
+                print(e)
                 bt = traceback.format_exception(*sys.exc_info()[:3])
                 context['err'] = """
                 An exception was thrown in find_courses:

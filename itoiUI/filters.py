@@ -3,12 +3,14 @@ import os
 
 
 # Use this filename for the database
-#DATA_DIR = ''
-#DATABASE_FILENAME = os.path.join(DATA_DIR, 'course_information.sqlite3')
-DATABASE_FILENAME = '../IssuetoImpact.db'
+# DATA_DIR = ''
+# DATABASE_FILENAME = os.path.join(DATA_DIR, 'IssuetoImpact.db')
+DATA_DIR = os.path.dirname(__file__)
+DATABASE_FILENAME = os.path.join(DATA_DIR, './IssuetoImpact.db')
 
 
-ARG_INFO = {'terms': {'table': 'catalog_index'},
+
+ARG_INFO = {'terms': {'table': 'bill_keywords'},
             'topic': {'table': 'bills'}}
 
 
@@ -37,7 +39,6 @@ def find_bills(args_from_ui):
     query, arg_tuple = generate_query(args_from_ui)
     print(query)
     print(arg_tuple)
-
     r = c.execute(query, arg_tuple)
     results = r.fetchall()
     header = get_header(c)
@@ -82,8 +83,8 @@ def create_select(args_from_dict):
     Inputs: Keys from the dictionary of arguments
     Returns: Columns to select in the SQL query (list)
     '''
-    select_cols = ['bill_number', 'chamber', 'status', 'last_action_date',\
-    'topic', 'primary_sponsor', 'bill_url', 'synopsis']
+    select_cols = ['bills.bill_number', 'bills.chamber', 'bills.status', 'bills.last_action_date',\
+    'bills.topic', 'bills.primary_sponsor', 'bills.bill_url', 'bills.synopsis']
     #'tweet_id', 'text',\
     #'date', 'user', 'url']
 
@@ -155,7 +156,7 @@ def generate_terms_subquery(val):
     FROM (SELECT bill_keywords.bill_number, count(*) as num_words \
           FROM bill_keywords \
           WHERE bill_keywords.keyword in ({}) \
-          GROUP BY bill_keywords.course_id) \
+          GROUP BY bill_keywords.bill_number) \
     WHERE num_words = ?)'''.format(', '.join(['?']* len(val)))
 
     return (query, query_args)
