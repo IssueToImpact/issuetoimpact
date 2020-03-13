@@ -46,7 +46,7 @@ def _build_dropdown(options):
     """Convert a list to (value, caption) tuples."""
     return [(x, x) if x is not None else ('', NOPREF_STR) for x in options]
 
-COMMITTEES = _build_dropdown(['Employment and Labor','Regulation',
+TOPICS = _build_dropdown(['Employment and Labor','Regulation',
 'Education','Environment','Health','Transportation','Criminal Justice',
 'Taxes','Energy and Public Utilities','Budget','Agriculture',
 'Commerce and Economic Development','Human and Social Services',
@@ -57,8 +57,8 @@ class SearchForm(forms.Form):
         label='Search terms',
         help_text='e.g. energy',
         required=False)
-    committee = forms.MultipleChoiceField(label='Committee Topics',
-                                     choices=COMMITTEES,
+    topic = forms.MultipleChoiceField(label='Committee Topics',
+                                     choices=TOPICS,
                                      widget=forms.CheckboxSelectMultiple,
                                      required=False)
 
@@ -76,13 +76,9 @@ def home(request):
             if form.cleaned_data['query']:
                 args['terms'] = form.cleaned_data['query'].split()
 
-            committee = form.cleaned_data['committee']
-            if committee:
-                args['committee'] = committee
-
-
-            #if form.cleaned_data['show_args']:
-                #context['args'] = 'args_to_ui = ' + json.dumps(args, indent=2)
+            topic = form.cleaned_data['topic']
+            if topic:
+                args['topic'] = topic
 
             try:
                 res = find_bills(args)

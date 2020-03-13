@@ -1,5 +1,3 @@
-from bills.models import Project
-
 import sqlite3
 import os
 
@@ -7,11 +5,11 @@ import os
 # Use this filename for the database
 #DATA_DIR = ''
 #DATABASE_FILENAME = os.path.join(DATA_DIR, 'course_information.sqlite3')
-DATABASE_FILENAME = 'IssuetoImpact.db'
+DATABASE_FILENAME = '../IssuetoImpact.db'
 
 
 ARG_INFO = {'terms': {'table': 'catalog_index'},
-            'committee': {'table': 'bills'}}
+            'topic': {'table': 'bills'}}
 
 
 def find_bills(args_from_ui):
@@ -20,7 +18,7 @@ def find_bills(args_from_ui):
     that match the criteria.  The dictionary will contain some of the
     following fields:
 
-      - committee is list of strings
+      - topic is list of strings
            -> ["'MWF'", "'TR'", etc.]
       - terms is a list of strings string: ["quantum", "plato"]
 
@@ -128,7 +126,7 @@ def generate_where_conditions(args_from_ui):
     for arg, val in args_from_ui.items():
         if arg == 'terms':
             sq, qa = generate_terms_subquery(val)
-            where_conds.append('bills.bill_num' + ' IN ' + sq)
+            where_conds.append('bills.bill_number' + ' IN ' + sq)
             query_args.extend(qa)
         else:
             if type(val) == list:
@@ -153,10 +151,10 @@ def generate_terms_subquery(val):
     '''
     query_args = val + [len(val)]
 
-    query = ''' (SELECT bill_num \
-    FROM (SELECT bill_keywords.bill_num, count(*) as num_words \
+    query = ''' (SELECT bill_number \
+    FROM (SELECT bill_keywords.bill_number, count(*) as num_words \
           FROM bill_keywords \
-          WHERE bill_keywords.word in ({}) \
+          WHERE bill_keywords.keyword in ({}) \
           GROUP BY bill_keywords.course_id) \
     WHERE num_words = ?)'''.format(', '.join(['?']* len(val)))
 
@@ -174,12 +172,12 @@ def assert_valid_input(args_from_ui):
 
     assert isinstance(args_from_ui, dict)
 
-    acceptable_keys = set(['terms', 'committee'])
+    acceptable_keys = set(['terms', 'topic'])
     assert set(args_from_ui.keys()).issubset(acceptable_keys)
 
     # day is a list of strings, if it exists
-    assert isinstance(args_from_ui.get("committee", []), (list, tuple))
-    assert all([isinstance(s, str) for s in args_from_ui.get("committee", [])])
+    assert isinstance(args_from_ui.get("topic", []), (list, tuple))
+    assert all([isinstance(s, str) for s in args_from_ui.get("topic", [])])
 
     # terms is a non-empty list of strings, if it exists
     terms = args_from_ui.get("terms", [""])
