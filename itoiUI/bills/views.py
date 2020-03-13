@@ -7,6 +7,11 @@ from django import forms
 from django.shortcuts import render
 from bills.models import Project
 
+from django.urls import reverse_lazy
+from django.views.generic.edit import FormView
+
+from .forms import SearchForm
+
 from filters import find_bills
 
 def project_index(request):
@@ -52,36 +57,10 @@ def _valid_result(res):
         return isinstance(row, (tuple, list)) and len(row) == n
     return reduce(and_, (_valid_row(x) for x in res[RESULTS]), True)
 
-
-def _load_column(filename, col=0):
-    """Load single column from csv file."""
-    with open(filename) as f:
-        col = list(zip(*csv.reader(f)))[0]
-        return list(col)
-
-
-def _build_dropdown(options):
-    """Convert a list to (value, caption) tuples."""
-    return [(x, x) if x is not None else ('', NOPREF_STR) for x in options]
-
-COMMITTEES = _build_dropdown(['Employment and Labor','Regulation',
-'Education','Environment','Health','Transportation','Criminal Justice',
-'Taxes','Energy and Public Utilities','Budget','Agriculture',
-'Commerce and Economic Development','Human and Social Services',
-'Veterans Affairs','Telecommunications and Information Technology'])
-
-class SearchForm(forms.Form):
-    query = forms.CharField(
-        label='Search terms',
-        help_text='e.g. energy',
-        required=False)
-    committee = forms.MultipleChoiceField(label='Committee Topics',
-                                     choices=COMMITTEES,
-                                     widget=forms.CheckboxSelectMultiple,
-                                     required=False)
-    #show_args = forms.BooleanField(label='Show args_to_ui',
-                                   #required=False)
-
+class SearchView(FormView):
+    form_class = SearchForm
+    template_name = 'project_index.html'
+    success_url = reverse_lazy('success')
 
 def home(request):
     context = {}
@@ -98,15 +77,15 @@ def home(request):
                 args['terms'] = form.cleaned_data['query'].split()
 
             committee = form.cleaned_data['committee']
-            if days:
-                args['committee'] = days
+            if committee:
+                args['committee'] = committee
 
 
             #if form.cleaned_data['show_args']:
                 #context['args'] = 'args_to_ui = ' + json.dumps(args, indent=2)
 
             try:
-                res = find_courses(args)
+                res = find_bills(args)
             except Exception as e:
                 print('Exception caught')
                 bt = traceback.format_exception(*sys.exc_info()[:3])

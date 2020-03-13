@@ -144,15 +144,15 @@
             <!--Grid row-->
             <div class="row">
               <div id="header">
-                   <h1>Course Catalog Search</h1>
+                   <h1>Bill Search</h1>
                </div>
-               <div class="frame">
-                   <form method="get">
-                       {% csrf_token %}
-                       <table class="form">
+               <div id = "form">
+                   <form method="get" novalidate>
+
                        {{ form.as_ul }}
-                       </table>
                        <input type="submit" value="Submit" />
+
+                      {% csrf_token %}
                    </form>
                </div>
 
