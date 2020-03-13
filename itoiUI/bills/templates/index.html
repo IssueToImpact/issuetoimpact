@@ -146,15 +146,16 @@
               <div id="header">
                    <h1>Bill Search</h1>
                </div>
-               <div id = "form">
-                   <form method="get" novalidate>
-
-                       {{ form.as_ul }}
+               <div class="frame">
+                   <form method="get">
+                       {% csrf_token %}
+                       <table class="form">
+                       {{ form }}
+                       </table>
                        <input type="submit" value="Submit" />
-
-                      {% csrf_token %}
                    </form>
                </div>
+
 
                {% if args %}
                <div class="args">

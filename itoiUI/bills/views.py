@@ -4,29 +4,14 @@ from operator import and_
 from django.shortcuts import render
 from django import forms
 
-from django.shortcuts import render
-from bills.models import Project
-
-from django.urls import reverse_lazy
-from django.views.generic.edit import FormView
-
-from .forms import SearchForm
-
 from filters import find_bills
 
-def project_index(request):
-    projects = Project.objects.all()
-    context = {
-        'projects': projects
-    }
-    return render(request, 'project_index.html', context)
-
-def project_detail(request, pk):
-    project = Project.objects.get(pk=pk)
-    context = {
-        'project': project
-    }
-    return render(request, 'project_detail.html', context)
+# def project_index(request):
+#     projects = Project.objects.all()
+#     context = {
+#         'projects': projects
+#     }
+#     return render(request, 'project_index.html', context)
 
 NOPREF_STR = 'No preference'
 COLUMN_NAMES = dict(
@@ -57,10 +42,25 @@ def _valid_result(res):
         return isinstance(row, (tuple, list)) and len(row) == n
     return reduce(and_, (_valid_row(x) for x in res[RESULTS]), True)
 
-class SearchView(FormView):
-    form_class = SearchForm
-    template_name = 'project_index.html'
-    success_url = reverse_lazy('success')
+def _build_dropdown(options):
+    """Convert a list to (value, caption) tuples."""
+    return [(x, x) if x is not None else ('', NOPREF_STR) for x in options]
+
+COMMITTEES = _build_dropdown(['Employment and Labor','Regulation',
+'Education','Environment','Health','Transportation','Criminal Justice',
+'Taxes','Energy and Public Utilities','Budget','Agriculture',
+'Commerce and Economic Development','Human and Social Services',
+'Veterans Affairs','Telecommunications and Information Technology'])
+
+class SearchForm(forms.Form):
+    query = forms.CharField(
+        label='Search terms',
+        help_text='e.g. energy',
+        required=False)
+    committee = forms.MultipleChoiceField(label='Committee Topics',
+                                     choices=COMMITTEES,
+                                     widget=forms.CheckboxSelectMultiple,
+                                     required=False)
 
 def home(request):
     context = {}
@@ -123,4 +123,4 @@ def home(request):
         context['columns'] = [COLUMN_NAMES.get(col, col) for col in columns]
 
     context['form'] = form
-    return render(request, 'project_index.html', context)
+    return render(request, 'index.html', context)
