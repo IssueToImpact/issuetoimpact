@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'ui',
     'bills',
     'bootstrap4',
-    'django_filters',
 ]
 
 MIDDLEWARE = [
