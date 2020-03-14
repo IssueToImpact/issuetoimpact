@@ -1,0 +1,81 @@
+
+
+scraper.py - module that consists of functions to scrape the Illinois General
+assembly website for information on bills and representatives.  Updates
+dictionaries.
+Scraped data includes:
+Bills:
+- number
+- last action (date, chamber, action)
+- short description
+- synopsis
+- sponsors
+- committee (id and name) if assigned
+
+Representatives:
+- name
+- party
+- district
+- committees (id and name)
+
+process.py - module that consists of functions to manipulate bill and rep data
+including outputting data as csv files.
+
+
+Leg_Scraper.py - script that scrapes bill and rep data from the Illinois
+General Assembly website, aggregates some statistics on representatives such as
+the number of bills sponsored for each topic, total pass rate, rank in party for
+bills sponsored and pass rate.
+
+Output files:
+bill_table_data.csv with columns:
+- bill_number
+- chamber
+- status
+- last_action_date
+- topic
+- primary_sponsor
+- bill_url
+- synopsis
+
+bill_keywords.csv with columns:
+- keyword
+- bill number
+
+bill_topics.csv with columns:
+- bill number
+- topic
+
+rep_data.csv with columns:
+- name
+- party
+- district
+- count_sponsored
+- count_passed
+- Agriculture
+- Budget
+- Commerce_and_Economic_Development
+- Criminal_Justice
+- Education
+- Energy_and_Public_Utilities
+- Environment
+- Health
+- Human_and_Social_Services
+- Employment_and_Labor
+- Public_Safety_and_Firearms
+- Regulation
+- Taxes
+- Telecommunications_and_Information_Technology
+- Transportation
+- Veterans_Affairs
+- pass_rate
+- sponsored_rank_in_party
+- pass_rate_rank_in_party
+
+csv_to_sql.py - creates a sqlite3 database named IssuetoImpact.db consisting of
+4 tables.  Each table's data comes in a csv file.
+Tables:
+bills
+bill_keywords
+reps
+tweets
