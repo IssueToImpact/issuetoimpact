@@ -3,8 +3,6 @@ import os
 
 
 # Use this filename for the database
-# DATA_DIR = ''
-# DATABASE_FILENAME = os.path.join(DATA_DIR, 'IssuetoImpact.db')
 DATA_DIR = os.path.dirname(__file__)
 DATABASE_FILENAME = os.path.join(DATA_DIR, './IssuetoImpact.db')
 
@@ -147,10 +145,6 @@ def create_join(args_from_dict,):
     if 'terms' in args_from_dict:
         join_lst.extend(['bill_keywords'])
         on_lst.extend(['bills.bill_number = bill_keywords.bill_number'])
-
-    # if tweets:
-    #     join_lst.extend(['tweets'])
-    #     on_lst.extend(['bills.bill_number = tweets.bill_num'])
 
     return (join_lst, on_lst)
 

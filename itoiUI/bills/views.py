@@ -9,12 +9,6 @@ from django import forms
 
 from filters import find_bills
 
-# def project_index(request):
-#     projects = Project.objects.all()
-#     context = {
-#         'projects': projects
-#     }
-#     return render(request, 'project_index.html', context)
 
 NOPREF_STR = 'No preference'
 COLUMN_NAMES = dict(
@@ -111,7 +105,7 @@ def home(request):
     else:
         columns, result = res
 
-        #Wrap in tuple if result is not already
+        #Wrap in tuple and filter to diff columns
         if result:
             main = [tuple(r[0:-2]) for r in result]
 
