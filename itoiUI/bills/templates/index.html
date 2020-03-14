@@ -129,47 +129,85 @@
                    {{ err|safe }}
                </div>
                {% endif %}
+               </div>
 
 
+            <div class="row">
+              <br>
+              <br>
+              <br>
+              <br>
+              <br>
+              <p class="num_results">Results: {{ num_results }}</p>
+            </div>
+            <div class="row">
+              <br>
+              <br>
+              <br>
+              <br>
+              <!--Accordion wrapper-->
+              <div class="accordion md-accordion" id="accordionEx" role="tablist" aria-multiselectable="true">
+                {% if result != None %}
+                {% for entry in result %}
+                <!-- Accordion card -->
+                <div class="card">
 
-            <!--Accordion wrapper-->
-            <div class="accordion md-accordion" id="accordionEx" role="tablist" aria-multiselectable="true">
-          {% if result != None %}
-          {% for entry in main %}
-              <!-- Accordion card -->
-              <div class="card">
+                  <!-- Card header --> <div class="card-header" role="tab"
+                  id="heading{{ forloop.counter }}"> <a data-toggle="collapse"
+                  data-parent="#accordionEx" href="#collapse{{ forloop.counter }}"
+                  aria-expanded="true" aria-controls="collapse{{ forloop.counter }}"> <h5
+                  class="mb-0"> {{ entry.0 }}<i class="fas
+                  fa-angle-down rotate-icon"></i> </h5> </a> </div>
 
-                <!-- Card header --> <div class="card-header" role="tab"
-                id="heading{{ forloop.counter }}"> <a data-toggle="collapse"
-                data-parent="#accordionEx" href="#collapse{{ forloop.counter }}"
-                aria-expanded="true" aria-controls="collapse{{ forloop.counter }}"> <h5
-                class="mb-0"> {{ entry.0 }}<i class="fas
-                fa-angle-down rotate-icon"></i> </h5> </a> </div>
+                  <!-- Card body -->
+                  <div id="collapse{{ forloop.counter }}" class="collapse show"
+                  role="tabpanel" aria-labelledby="heading{{ forloop.counter }}" data-parent="#accordionEx">
+                    <div class="card-body">
+                      <div class="row">
+                          <p class="text-center">
+                            <b>{{ columns.0 }}</b><br>
+                            {{ entry.0 }}<br>
 
-                <!-- Card body -->
-                <div id="collapse{{ forloop.counter }}" class="collapse show"
-                role="tabpanel" aria-labelledby="heading{{ forloop.counter }}" data-parent="#accordionEx">
-                <div class="card-body">
-                  <table class="bills">
-                    <tr>
-                      {% for col in columns %}
-                          <th>{{ col }}</th>
-                          {% endfor %}
-                      </tr>
-                      <tr>
-                          {% for col in entry %}
-                          <td>{{ col }}</td>
-                          {% endfor %}
-                      </tr>
-                  </table>
+                            <b>{{ columns.1 }}</b><br>
+                            {{ entry.1 }}<br>
+
+                            <b>{{ columns.2 }}</b><br>
+                            {{ entry.2 }}<br>
+
+                            <b>{{ columns.3 }}</b><br>
+                            {{ entry.3 }}<br>
+
+                            <b>{{ columns.4 }}</b><br>
+                            {{ entry.4 }}<br>
+
+                            <b>{{ columns.5 }}</b><br>
+                            {{ entry.5 }}<br>
+                          </p>
+                          </div>
+                          <div class="row">
+                          <p class="text-center">
+
+                            <b>{{ columns.6 }}</b><br>
+                            {{ entry.6 }}<br>
+
+                            <b>{{ columns.7 }}</b><br>
+                            {{ entry.7 }}<br>
+
+                            <b>{{ columns.8 }}</b><br>
+                            {{ entry.8 }}<br>
+
+                            <!-- {% for tweet in entry.8 %}
+                            {{ tweet }}
+                            {% endfor %} -->
+                          </p>
+                    </div>
                   </div>
-                </div>
+                  </div>
 
               </div> <!-- Accordion card -->
           {% endfor %}
-          <!-- </table> -->
+
           </div>
-          <p class="num_results">Results: {{ num_results }}</p>
           {% endif %}
 </div> <!-- Accordion wrapper -->
 
@@ -191,10 +229,9 @@
 
                 <!--Grid column-->
 
-            </div>
             <!--Grid row-->
 
-        </section>
+      </section>
         <!--Section: Gallery-->
 
         <hr class="my-5">

@@ -105,26 +105,12 @@ def home(request):
     else:
         columns, result = res
 
-        #Wrap in tuple and filter to diff columns
-        if result:
-            main = [tuple(r[0:-2]) for r in result]
-
-        if result:
-            for r in result:
-                print(r)
-            synopsis = [(r[-2],) for r in result]
-            print(synopsis)
-
-        if result:
-            tweets =[(r[-1],) for r in result]
 
         colnames = [COLUMN_NAMES.get(col, col) for col in columns]
 
-        context['result'] = main
-        context['synopsis'] = synopsis
-        context['tweets'] = tweets
+        context['result'] = result
         context['num_results'] = len(result)
-        context['columns'] = colnames[0:-2]
+        context['columns'] = colnames
 
     context['form'] = form
     return render(request, 'index.html', context)
