@@ -34,9 +34,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#rep">Contact your Rep</a>
                     </li>
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a class="nav-link" href="#contact">Contact</a>
-                    </li>
+                    </li> -->
                 </ul>
                 <!-- Links -->
             </div>
@@ -223,77 +223,35 @@
 
             <!-- Heading -->
             <h2 class="mb-5 font-weight-bold text-center">Find my Rep</h2>
+            {% if rep_dict != None %}
+            {% for key, value in rep_dict.items %}
+            <div class="card" style="width: 30rem center;">
+                <div class="card-body">
+                  <h5 class="card-title">{{ key }}</h5>
+                  <h6 class="card-subtitle mb-2 text-muted">{{value.chamber}}</h6>
+                  <p class="card-text">
+                    <b> Address: </b><br>
+                    {{ value.contact_details.address }}<br>
+                    <b> Voice: </b><br>
+                    {{ value.contact_details.voice}}<br>
+                    <b> Email: </b><br>
+                    {{ value.contact_details.email }}
 
 
 
 
+
+                  </p>
+                </div>
+              </div>
+            {% endfor %}
+            {% endif %}
                 <!--Grid column-->
 
             <!--Grid row-->
 
       </section>
         <!--Section: Gallery-->
-
-        <hr class="my-5">
-
-        <!--Section: Contact-->
-        <section id="contact">
-
-            <!-- Heading -->
-            <h2 class="mb-5 font-weight-bold text-center">Contact us</h2>
-
-            <!--Grid row-->
-            <div class="row">
-
-                <!--Grid column-->
-                <div class="col-lg-5 col-md-12">
-
-                </div>
-                <!--Grid column-->
-
-                <!--Grid column-->
-                <div class="col-lg-7 col-md-12">
-
-                    <!--Grid row-->
-                    <div class="row text-center">
-
-                        <!--Grid column-->
-                        <div class="col-lg-4 col-md-12 mb-3">
-
-
-
-                        </div>
-                        <!--Grid column-->
-
-                        <!--Grid column-->
-                        <div class="col-lg-4 col-md-6 mb-3">
-
-
-
-                        </div>
-                        <!--Grid column-->
-
-                        <!--Grid column-->
-                        <div class="col-lg-4 col-md-6 mb-3">
-
-
-                        </div>
-                        <!--Grid column-->
-
-                    </div>
-                    <!--Grid row-->
-
-                    <!--Google map-->
-                    <div id="map-container" class="z-depth-1-half map-container mb-5" style="height: 400px"></div>
-
-                </div>
-                <!--Grid column-->
-
-            </div>
-            <!--Grid row-->
-
-        </section>
-        <!--Section: Contact-->
 
     </div>
 </main>

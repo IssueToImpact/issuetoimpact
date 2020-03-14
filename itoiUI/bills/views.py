@@ -1,6 +1,8 @@
 import traceback
 import os
 import sys
+import requests
+from geopy.geocoders import Nominatim
 from functools import reduce
 from operator import and_
 
@@ -8,8 +10,9 @@ from django.shortcuts import render
 from django import forms
 
 from filters import find_bills
+from find_rep_contacts import find_rep_from_address
 
-
+##### BILL FILTERING AND RETURN ##########
 NOPREF_STR = 'No preference'
 COLUMN_NAMES = dict(
     bill_number='Bill Number',
@@ -58,6 +61,11 @@ class SearchForm(forms.Form):
                                      choices=TOPICS,
                                      widget=forms.CheckboxSelectMultiple,
                                      required=False)
+    address = forms.CharField(
+        label='Enter your address',
+        help_text="""We're not storing it, just using it to find your
+        representatives later on the page!""",
+        required=False)
 
 def home(request):
     context = {}
@@ -77,6 +85,13 @@ def home(request):
             if topic:
                 args['topic'] = topic
 
+            address = form.cleaned_data['address']
+
+            if address:
+                rep_dict = find_rep_from_address(address)
+                print(rep_dict)
+            else:
+                rep_dict = None
             try:
                 res = find_bills(args)
             except Exception as e:
@@ -107,7 +122,7 @@ def home(request):
 
 
         colnames = [COLUMN_NAMES.get(col, col) for col in columns]
-
+        context['rep_dict'] = rep_dict
         context['result'] = result
         context['num_results'] = len(result)
         context['columns'] = colnames
