@@ -108,19 +108,29 @@ def home(request):
         result = None
     elif not _valid_result(res):
         context['result'] = None
-        context['err'] = ('Return of find_courses has the wrong data type. '
-                          'Should be a tuple of length 4 with one string and '
-                          'three lists.')
     else:
         columns, result = res
 
-        # Wrap in tuple if result is not already
-        if result and isinstance(result[0], str):
-            result = [(r,) for r in result]
+        #Wrap in tuple if result is not already
+        if result:
+            main = [tuple(r[0:-2]) for r in result]
 
-        context['result'] = result
+        if result:
+            for r in result:
+                print(r)
+            synopsis = [(r[-2],) for r in result]
+            print(synopsis)
+
+        if result:
+            tweets =[(r[-1],) for r in result]
+
+        colnames = [COLUMN_NAMES.get(col, col) for col in columns]
+
+        context['result'] = main
+        context['synopsis'] = synopsis
+        context['tweets'] = tweets
         context['num_results'] = len(result)
-        context['columns'] = [COLUMN_NAMES.get(col, col) for col in columns]
+        context['columns'] = colnames[0:-2]
 
     context['form'] = form
     return render(request, 'index.html', context)

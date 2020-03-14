@@ -36,18 +36,61 @@ def find_bills(args_from_ui):
     conn = sqlite3.connect(DATABASE_FILENAME)
     c = conn.cursor()
 
-    query, arg_tuple = generate_query(args_from_ui)
-    print(query)
-    print(arg_tuple)
+    query, arg_tuple = generate_bills_query(args_from_ui)
     r = c.execute(query, arg_tuple)
+
     results = r.fetchall()
     header = get_header(c)
+
+    unique_bills = set()
+    for item in results:
+        unique_bills.add(item[0])
+
+    unique_bills = tuple(unique_bills)
+    where_cond = ' IN ({})'.format(', '.join(['?'] * len(unique_bills)))
+
+    query2 = generate_tweets_query(args_from_ui) + where_cond
+
+    r = c.execute(query2, unique_bills)
+    tweets = r.fetchall()
+    revised = []
+    for result in results:
+        revised.append(list(result))
+
+    tweet_dict = {}
+    if len(tweets) > 0:
+        for tweet in tweets:
+            bill = tweet[0]
+            if bill not in tweet_dict:
+                tweet_dict[bill] = [tweet]
+            elif bill in tweet_dict:
+                tweet_dict[bill].append(tweet)
+
+    for bill in revised:
+        bill_num = bill[0]
+        if bill_num in tweet_dict:
+            bill.append(tweet_dict[bill_num])
+        else:
+            bill.append([])
+
     conn.close()
+    header.append('tweets')
 
-    return (header, results)
+    return (header, revised)
+
+def generate_tweets_query(args_from_ui):
+        args = args_from_ui.keys()
+        vals = args_from_ui.values()
+
+        select_cols = '*'
+
+        query_string = 'SELECT ' + ', '.join(select_cols)\
+                        + ' FROM tweets WHERE tweets.bill_num'
+
+        return query_string
 
 
-def generate_query(args_from_ui):
+def generate_bills_query(args_from_ui):
     '''
     Put all the query functions together to make the final text query to send
 
@@ -85,13 +128,11 @@ def create_select(args_from_dict):
     '''
     select_cols = ['bills.bill_number', 'bills.chamber', 'bills.status', 'bills.last_action_date',\
     'bills.topic', 'bills.primary_sponsor', 'bills.bill_url', 'bills.synopsis']
-    #'tweet_id', 'text',\
-    #'date', 'user', 'url']
 
     return select_cols
 
 
-def create_join(args_from_dict):
+def create_join(args_from_dict,):
     '''
     Take in the arguments from the processed dictionary (the keys) and use them
     to create two lists that will be put together to create the join, where, and
@@ -107,8 +148,9 @@ def create_join(args_from_dict):
         join_lst.extend(['bill_keywords'])
         on_lst.extend(['bills.bill_number = bill_keywords.bill_number'])
 
-    #join_lst.append(['tweets'])
-    #on_lst.append('bills.bill_num = tweets.bill_num')
+    # if tweets:
+    #     join_lst.extend(['tweets'])
+    #     on_lst.extend(['bills.bill_number = tweets.bill_num'])
 
     return (join_lst, on_lst)
 
