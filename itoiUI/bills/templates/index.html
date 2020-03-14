@@ -129,37 +129,13 @@
                    {{ err|safe }}
                </div>
                {% endif %}
-<!--
-
-
-               <div class="frame">
-                   {% if result != None %}
-                   <div class="results">
-                       <table class="courses">
-                           <!-- <tr> -->
-                               <!-- {% for col in columns %}
-                               <th>{{ col }}</th>
-                               {% endfor %}
-                           </tr> -->
-                           <!-- {% for entry in result %}
-                           <tr>
-                               {% for col in entry %}
-                               <td>{{ col }}</td>
-                               {% endfor %}
-                           </tr>
-                           {% endfor %}
-                       </table>
-                   </div>
-                   <p class="num_results">Results: {{ num_results }}</p>
-                   {% endif %}
-               </div> -->
 
 
 
             <!--Accordion wrapper-->
             <div class="accordion md-accordion" id="accordionEx" role="tablist" aria-multiselectable="true">
           {% if result != None %}
-          {% for entry in result %}
+          {% for entry in main %}
               <!-- Accordion card -->
               <div class="card">
 
@@ -167,7 +143,7 @@
                 id="heading{{ forloop.counter }}"> <a data-toggle="collapse"
                 data-parent="#accordionEx" href="#collapse{{ forloop.counter }}"
                 aria-expanded="true" aria-controls="collapse{{ forloop.counter }}"> <h5
-                class="mb-0"> {{ entry.synopsis }}<i class="fas
+                class="mb-0"> {{ entry.0 }}<i class="fas
                 fa-angle-down rotate-icon"></i> </h5> </a> </div>
 
                 <!-- Card body -->
