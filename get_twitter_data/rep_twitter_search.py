@@ -20,10 +20,9 @@ def get_twitter_handles(rep_twitter_file):
 def update_reps_dict(tweet_json, reps_name, rep_handle, reps_dict):
     '''
     '''
-    if len(reps_name) != 1:
+    rep = reps_name[0]
+    if len(reps_name) != 1:  # n.b. doc gives some general twitter accounts for multiple people
         rep = rep_handle
-    else:
-        rep = reps_name[0]
 
     if rep not in reps_dict:
         reps_dict[rep] = {'twitter_handle': rep_handle,
@@ -32,7 +31,8 @@ def update_reps_dict(tweet_json, reps_name, rep_handle, reps_dict):
     tweet_id = tweet_json['id']
     if tweet_id not in reps_dict[rep]['tweets']:
         tweet['text'] = tweet_json['full_text']
-        tweet['url'] = twitter_url = 'https://twitter.com/{}/status/{}'.format(tweet_json['user']['screen_name'], tweet_id)
+        tweet['url'] = 'https://twitter.com/{}/status/{}'\
+                        .format(tweet_json['user']['screen_name'], tweet_id)
         reps_dict[rep]['tweets'][tweet_id] = tweet
 
 def search_reps_tweets(rep_twitter_file, reps_json_file):
@@ -48,7 +48,6 @@ def search_reps_tweets(rep_twitter_file, reps_json_file):
             break
 
         rep_names = reps_twitter_dict[rep_twitter]
-    # n.b. doc gives some general twitter accounts for multiple people
 
         if tweets_json['statuses']:
             for t in tweets_json['statuses']:
