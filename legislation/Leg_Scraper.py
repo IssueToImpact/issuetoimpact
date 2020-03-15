@@ -28,7 +28,20 @@ def data_to_csv(data, filename, header):
         writer.writerows(data)
 
 
-#Obtain a dictionary of basic bill info - either by scraping or from json.
+'''
+Scrape legislation information from Illinois General Assembly Website.
+- If the parameter limit is not None, scraper will stop after collecting the number
+specified in the limit parameter.
+- If the parameter load_from_json is True, legislation and representative data
+will not be scraped, instead it will be loaded from two json files called
+'bill_scraped_info.json' and 'rep_scraped_info.json'.
+- If the parameter output_to_file is True, legislation and representative data that
+is scraped will be written out to json files called
+'bill_scraped_info.json' and 'rep_scraped_info.json'.
+- If the parameter output_to_screen is True, data that is scraped will be output
+to the screen (with the limit specified).
+'''
+#Get legislation information
 if not load_from_json:
     bill_links = scraper.get_bill_links(limit = limit)
     bill_info = {}
@@ -58,7 +71,7 @@ if output_to_screen and not load_from_json:
         print(bill_info)
 
 
-#Obtain a dictionary of basic rep info - either by scraping or from json.
+#Get representative information.
 if not load_from_json:
     rep_info = {}
     scraper.update_rep_dict(rep_info, senate_url, 'Senate')
@@ -71,9 +84,14 @@ else:
         rep_info = json.load(read_file)
 
 
-#Process scraped bill data to add keywords, topic, and status to bill dictionary.
-#Create lists that will go to csv files for sql database.
-#Csv files created: bill_table_data.csv, bill_topics.csv, bill_keywords.csv
+'''
+Process scraped bill data to add keywords, topic, and status to bill dictionary.
+Create lists that will go to csv files for sql database.
+If output_to_file parameter is True: csv files created: bill_table_data.csv,
+    bill_topics.csv, bill_keywords.csv
+If output_to_screen parameter is True, data will be printed on screen (up to limits
+    if limit parameter is not None.)
+'''
 
 bills_table_data = []
 bill_keywords = []
@@ -113,6 +131,15 @@ if output_to_screen:
     print(bill_topics[:limit])
 
 
+'''
+Process scraped representative data to aggregate data from legislation data
+to calculate metrics for each rep such as the number of bills sponsored, pass
+rate of sponsored bills, and number of bills sponsored by topic.
+Create list that will go to csv files for sql database.
+If output_to_file parameter is True: csv file created: rep_data.csv
+If output_to_screen parameter is True, data will be printed on screen (up to limits
+    if limit parameter is not None.)
+'''
 process.set_rep_bill_counts(bill_info, rep_info)
 
 if output_to_screen:
