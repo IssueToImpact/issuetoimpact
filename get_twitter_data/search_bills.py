@@ -1,12 +1,7 @@
 import json
-import path
 from datetime import datetime
 
-from standard_twitter_search import twitter_search
-
-# args
-FULL_SEARCH = False
-PRINT_TO_SCREEN = True
+from get_twitter_data.standard_twitter_search import twitter_search
 
 def find_active_bills(bill_info_file):
     '''
@@ -25,9 +20,9 @@ def find_active_bills(bill_info_file):
 
     date_since = datetime.strptime('1/1/2020', '%m/%d/%Y')
 
-    active_bills = {b: bills[b]['short description'] for b in bills
+    active_bills = {b: bills[b]['short_description'] for b in bills
                        if bills[b]['committee']!=None and
-                            datetime.strptime(bills[b]['last action']['date'],
+                            datetime.strptime(bills[b]['last_action']['date'],
                                               '%m/%d/%Y') >= date_since}
 
     return list(active_bills.keys())
@@ -93,8 +88,7 @@ def save_to_json_file(dict, output_filename):
     with open(output_filename, 'w') as output_file:
         json.dump(dict, output_file)
 
-def search_bill_tweets(tweet_json_file, users_json_file,\
-                       bill_info_file='../legislation/bill_info.json'):
+def search_bill_tweets(bill_info_file, limit, print_to_screen, tweet_json_file='data/bill_info.json', users_json_file='data/users_info.json'):
     '''
     Search tweets referencing bill numbers in illinois
 
@@ -107,19 +101,14 @@ def search_bill_tweets(tweet_json_file, users_json_file,\
     tweet_dict = {}
     users_dict = {}
 
-    for filename in [tweet_json_file, users_json_file]:
-        if path.exists(filename):
-            return "{} already exists. Please choose alternative \
-                    filename".format(filename)
-
     active_bills = find_active_bills(bill_info_file)
 
-    if not FULL_SEARCH:
-        active_bills = active_bills[:10]
+    if limit:
+        active_bills = active_bills[:limit]
 
     for i, bill_num in enumerate(active_bills):
-        tweets_json = twitter_search(bill_num, i, 'bills', full_search)
-        if PRINT_TO_SCREEN:
+        tweets_json = twitter_search(bill_num, i, 'bills')
+        if print_to_screen:
             return active_bills
         if not tweets_json:
             break

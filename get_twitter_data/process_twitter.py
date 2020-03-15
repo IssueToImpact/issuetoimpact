@@ -4,7 +4,7 @@ import re
 import os.path
 from os import path
 
-from rep_twitter_search import get_twitter_handles
+from get_twitter_data.rep_twitter_search import get_twitter_handles
 
 def open_json(filename):
     '''
@@ -13,7 +13,7 @@ def open_json(filename):
         json_str = ji.read()
         return json.loads(json_str)
 
-def generate_users_bills_table(users_filename, update):
+def generate_users_bills_table(users_filename):
     '''
     '''
     reps_twitter = get_twitter_handles('illinois_reps_twitter_handles.txt')
@@ -23,7 +23,7 @@ def generate_users_bills_table(users_filename, update):
 
     write_type = 'w'
 
-    if update and path.exists('users.csv'):
+    if path.exists(path + 'users.csv'):
         write_type = 'a'
 
     with open('users.csv', write_type) as c:
@@ -38,15 +38,15 @@ def generate_users_bills_table(users_filename, update):
                     name = users_dict[b][user]['screen_name']
                     f.writerow([name, b, users_dict[b][user]['count']])
 
-def write_bill_tweet_csv(bill_num, tweet_id, tweet, update):
+def write_bill_tweet_csv(bill_num, tweet_id, tweet, path):
     '''
     '''
     write_type = 'w'
 
-    if update and path.exists('tweets.csv'):
+    if update and path.exists(path + 'tweets.csv'):
         write_type = 'a'
 
-    with open('tweets.csv', write_type) as c:
+    with open(path + 'tweets.csv', write_type) as c:
         f = csv.writer(c)
         if write_type == 'w':
             f.writerow(["bill_number", "tweet_id", "text", "date", "user", "url"])
@@ -56,24 +56,23 @@ def write_bill_tweet_csv(bill_num, tweet_id, tweet, update):
                     tweet["created_at"], tweet["user"],
                     tweet["url"]])
 
-def write_bill_tweet_tables(tweet_json, update):
+def write_bill_tweet_tables(tweet_json, output_path):
     '''
     '''
     tweet_dict = open_json(tweet_json)
 
     for bill_num in tweet_dict:
         for tweet in tweet_dict[bill_num]:
-            write_bill_tweet_csv(bill_num, tweet_id, tweet, update)
-            write_hashtag_csv(bill_num, tweet_dict[bill_num][tweet]["full_text"], update)
+            write_bill_tweet_csv(bill_num, tweet_id, tweet, output_path)
+            write_hashtag_csv(bill_num, tweet_dict[bill_num][tweet]["full_text"])
 
-
-def write_hashtag_csv(bill_num, tweet_text, update):
+def write_hashtag_csv(bill_num, tweet_text):
     '''
     '''
     write_type = 'w'
 
-    if update and path.exists('hashtags.csv'):
-            write_type = 'a'
+    if path.exists('hashtags.csv'):
+        write_type = 'a'
 
     with open('hashtags.csv', write_type) as c:
         f = csv.writer(c)
@@ -83,3 +82,9 @@ def write_hashtag_csv(bill_num, tweet_text, update):
         hashtags = re.findall(r"#(\w+)", tweet_text)
         for h in hashtags:
             f.writerow([bill_num, h])
+
+def generate_csvs(output_path):
+    '''
+    '''
+    generate_users_bills_table('./data/users.json')
+    write_bill_tweet_tables('./data/tweets.json',output_path)

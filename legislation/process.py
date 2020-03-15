@@ -1,4 +1,3 @@
-
 import json
 import csv
 import re
@@ -79,13 +78,13 @@ COMMITTEE_TOPICS = {'2549': 'Human and Social Services',
                     '2374': 'Veterans Affairs',
                     '2315': 'Veterans Affairs',
                     None: None}
+
 INDEX_IGNORE = set(['a', 'also', 'an', 'and', 'are', 'as', 'at', 'be',
                     'but', 'by', 'code', 'for', 'from', 'government', 'how', 'i',
                     'ii', 'iii', 'in', 'is', 'not', 'of',
                     'on', 'or', 's', 'so', 'that', 'the', 'their', 'this', 'through', 'to',
                     'we', 'were', 'which', 'will', 'with', 'state',
                     'yet', 'amends', 'law', 'creates', 'illinois', 'act', 'state', '2019'])
-
 
 
 def set_keywords(bill_info, bill_number):
