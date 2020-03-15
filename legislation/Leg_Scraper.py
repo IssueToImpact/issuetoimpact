@@ -18,6 +18,17 @@ def data_to_csv(data, filename, header):
 
 def get_bill_info(output_to_screen, load_from_json, limit):
     '''
+    Scrape legislation information from Illinois General Assembly Website.
+    - If the parameter limit is not None, scraper will stop after collecting the number
+    specified in the limit parameter.
+    - If the parameter load_from_json is True, legislation and representative data
+    will not be scraped, instead it will be loaded from two json files called
+    'bill_scraped_info.json' and 'rep_scraped_info.json'.
+    - If the parameter output_to_file is True, legislation and representative data that
+    is scraped will be written out to json files called
+    'bill_scraped_info.json' and 'rep_scraped_info.json'.
+    - If the parameter output_to_screen is True, data that is scraped will be output
+    to the screen (with the limit specified).
     '''
     if not load_from_json:
         bill_links = scraper.get_bill_links(LEG_URL, BASE_URL, limit)
