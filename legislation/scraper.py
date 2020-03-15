@@ -1,99 +1,7 @@
 import bs4
 import requests
 import html5lib
-import time
-import json
-import csv
-import re
-import pandas as pd
-
-
-BASE_URL = "http://www.ilga.gov"
-LEG_URL = BASE_URL + "/legislation/"
-senate_url = BASE_URL + "/senate/"
-house_url = BASE_URL + "/house/"
-
-TOPICS = ['Agriculture', 'Budget', 'Commerce and Economic Development', 'Criminal Justice', 'Education',
-          'Energy and Public Utilities', 'Environment', 'Health', 'Human and Social Services',
-          'Employment and Labor', 'Public Safety and Firearms', 'Regulation', 'Taxes',
-          'Telecommunications and Information Technology', 'Transportation', 'Veterans Affairs']
-
-COMMITTEE_TOPICS = {'2549': 'Human and Social Services',
-                    '2316': 'Agriculture',
-                    '2331': 'Agriculture',
-                    '2317': 'Budget',
-                    '2329': 'Budget',
-                    '2293': 'Education',
-                    '2550': 'Budget',
-                    '2293': 'Education',
-                    '2294': 'Budget',
-                    '2296': 'Education',
-                    '2295': 'Human and Social Services',
-                    '2297': 'Public Safety and Firearms',
-                    '2551': 'Human and Social Services',
-                    '2347': 'Regulation',
-                    '2299': 'Regulation',
-                    '2332': 'Regulation',
-                    '2358': 'Commerce and Economic Development',
-                    '2298': 'Commerce and Economic Development',
-                    '2348': 'Regulation',
-                    '2379': 'Telecommunications and Information Technology',
-                    '2342': 'Criminal Justice',
-                    '2381': 'Commerce and Economic Development',
-                    '2318': 'Education',
-                    '2361': 'Education',
-                    '2300': 'Education',
-                    '2355': 'Energy and Public Utilities',
-                    '2343': 'Energy and Public Utilities',
-                    '2344': 'Environment',
-                    '2302': 'Regulation',
-                    '2320': 'Regulation',
-                    '2319': 'Regulation',
-                    '2321': 'Commerce and Economic Development',
-                    '2373': 'Employment and Labor',
-                    '2304': 'Health',
-                    '2349': 'Regulation',
-                    '2333': 'Education',
-                    '2330': 'Human and Social Services',
-                    '2323': 'Regulation',
-                    '2303': 'Commerce and Economic Development',
-                    '2305': 'Education',
-                    '2306': 'Human and Social Services',
-                    '2552': 'Regulation',
-                    '2335': 'Commerce and Economic Development',
-                    '2345': 'Criminal Justice',
-                    '2308': 'Criminal Justice',
-                    '2362': 'Criminal Justice',
-                    '2334': 'Employment and Labor',
-                    '2309': 'Employment and Labor',
-                    '2325': 'Regulation',
-                    '2324': 'Regulation',
-                    '2389': 'Health',
-                    '2356': 'Budget',
-                    '2644': 'Health',
-                    '2310': 'Employment and Labor',
-                    '2553': 'Health',
-                    '2337': 'Health',
-                    '2311': 'Energy and Public Utilities',
-                    '2647': 'Public Safety and Firearms',
-                    '2326': 'Taxes',
-                    '2352': 'Budget',
-                    '2611': 'Human and Social Services',
-                    '2322': 'Regulation',
-                    '2313': 'Regulation',
-                    '2375': 'Telecommunications and Information Technology',
-                    '2327': 'Transportation',
-                    '2350': 'Transportation',
-                    '2351': 'Transportation',
-                    '2374': 'Veterans Affairs',
-                    '2315': 'Veterans Affairs',
-                    None: None}
-INDEX_IGNORE = set(['a', 'also', 'an', 'and', 'are', 'as', 'at', 'be',
-                    'but', 'by', 'code', 'for', 'from', 'government', 'how', 'i',
-                    'ii', 'iii', 'in', 'is', 'not', 'of',
-                    'on', 'or', 's', 'so', 'that', 'the', 'their', 'this', 'through', 'to',
-                    'we', 'were', 'which', 'will', 'with', 'state',
-                    'yet', 'amends', 'law', 'creates', 'illinois', 'act', 'state', '2019'])
+import re 
 
 def link_to_bs4(url):
     r = requests.get(url)
@@ -101,10 +9,9 @@ def link_to_bs4(url):
     soup = bs4.BeautifulSoup(html_text, "html5lib")
     return soup
 
-
-def get_bill_links(limit = None):
+def get_bill_links(leg_url, base_url, limit=None):
     #Get bs4 object from url
-    soup = link_to_bs4(LEG_URL)
+    soup = link_to_bs4(leg_url)
 
     #Scrape main pages and make a list of bill page links
     #If a limit is provided, only collect the links up to the limit
@@ -113,14 +20,14 @@ def get_bill_links(limit = None):
     ct = 0
     for a in main_links:
         if a.has_attr("href") and a['href'].startswith('grplist.asp'):
-            mid_url = LEG_URL + a['href']
+            mid_url = leg_url + a['href']
             mid_r = requests.get(mid_url)
             mid_html_text = mid_r.text.encode('iso-8859-1')
             mid_soup = bs4.BeautifulSoup(mid_html_text, "html5lib")
             mid_links = mid_soup.find_all("a")
             for mid_a in mid_links:
                 if mid_a.text.startswith("SB") or mid_a.text.startswith("HB"):
-                    bill_url = BASE_URL + mid_a['href']
+                    bill_url = base_url + mid_a['href']
                     bill_links.append(bill_url)
                     ct += 1
                     if limit and ct >= limit: break
@@ -192,7 +99,6 @@ def set_synopsis(bs4_bill, bill_info, bill_number):
         synopsis_list.append(tag.text.strip())
     synopsis = "  ".join(synopsis_list)
     bill_info[bill_number]['synopsis'] = synopsis.strip()
-
 
 
 def process_bill_link(url, bill_info):
