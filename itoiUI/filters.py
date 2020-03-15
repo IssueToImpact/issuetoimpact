@@ -49,9 +49,13 @@ def find_bills(args_from_ui):
     r = c.execute(query2, unique_bills)
     tweets = r.fetchall()
 
+    seen_bills = []
     revised = []
     for result in results:
-        revised.append(list(result))
+        bill_num = result[0]
+        if bill_num not in seen_bills:
+            seen_bills.append(bill_num)
+            revised.append(list(result))
 
     tweet_dict = {}
     if len(tweets) > 0:
@@ -62,12 +66,14 @@ def find_bills(args_from_ui):
             elif bill in tweet_dict:
                 tweet_dict[bill].append(tweet)
 
+
     for bill in revised:
         bill_number = bill[0]
         if bill_number in tweet_dict:
             bill.append(tweet_dict[bill_number])
         else:
             bill.append([])
+
     conn.close()
     header.append('tweets')
 
