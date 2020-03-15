@@ -11,6 +11,7 @@ from django import forms
 
 from filters import find_bills
 from find_rep_contacts import find_rep_from_address
+from get_rep_info import get_rep_info
 
 ##### BILL FILTERING AND RETURN ##########
 NOPREF_STR = 'No preference'
@@ -89,9 +90,13 @@ def home(request):
 
             if address:
                 rep_dict = find_rep_from_address(address)
-                print(rep_dict)
+                rep_info = []
+                for key in rep_dict.keys():
+                    info = get_rep_info(key)
+                    rep_info.append(tuple(info))
             else:
                 rep_dict = None
+                rep_info = None
             try:
                 res = find_bills(args)
             except Exception as e:
@@ -123,6 +128,7 @@ def home(request):
 
         colnames = [COLUMN_NAMES.get(col, col) for col in columns]
         context['rep_dict'] = rep_dict
+        context['rep_info'] = rep_info
         context['result'] = result
         context['num_results'] = len(result)
         context['columns'] = colnames
