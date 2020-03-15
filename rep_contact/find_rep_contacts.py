@@ -1,16 +1,34 @@
 import requests
 from geopy.geocoders import Nominatim
+'''
+Find a user's local representatives (and their contact details) given an
+address string input
+'''
 
 def calculate_lat_long_from_address(address_string):
     '''
+    Find latitude and longitude of address
+
+    Inputs:
+        address_string (str): user's address string
+    Returns:
+        (latitude, longitude) (floats): the lat and long of the inputed address
     '''
-    geolocator = Nominatim(user_agent="test")
+    geolocator = Nominatim(user_agent="issuetoimpact")
     location = geolocator.geocode(address_string)
 
     return (location.latitude, location.longitude)
 
 def call_openstates_api(lat, long):
     '''
+    Call openstates api to find local representatives and their contact
+    information, given address latitude and longitude
+
+    Inputs:
+        lat (float): address latitude
+        long (float): address longitude
+    Returns:
+        api call response json
     '''
     query = """
     {{
@@ -37,17 +55,24 @@ def call_openstates_api(lat, long):
     }}
     """
     variables = {
-       "lat": round(float(lat), 9),
-       "long": round(float(long), 9)
+       "lat": lat,
+       "long": long
     }
 
     open_states_api = 'https://openstates.org/graphql'
     headers = {'X-API-Key':'67a3f9ad-bd88-4561-b6fd-7c4719f0b397'}
-    response = requests.post(open_states_api, headers=headers, json={'query': query.format(**variables)})
+    response = requests.post(open_states_api, headers=headers,
+                            json={'query': query.format(**variables)})
     return response.json()
 
 def process_openstates_response(openstates_response):
     '''
+    Generate representatives contact information dictionary from api response
+
+    Inputs:
+        openstates_response (json): api request response
+    Returns:
+        representatives (dict): representatives and contact info dictionary
     '''
     representatives = {}
     for person in openstates_response["data"]["people"]["edges"]:
@@ -63,6 +88,13 @@ def process_openstates_response(openstates_response):
 
 def find_rep_from_address(address_string):
     '''
+    Given address string input, generate dictionary of local representatives
+    and their contact information
+
+    Inputs:
+        address_string (str): address string
+    Returns:
+        (dict) representatives contact information dictionary
     '''
     lat, long = calculate_lat_long_from_address(address_string)
     openstates_rep_response = call_openstates_api(lat, long)
