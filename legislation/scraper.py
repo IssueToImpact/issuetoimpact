@@ -96,6 +96,9 @@ INDEX_IGNORE = set(['a', 'also', 'an', 'and', 'are', 'as', 'at', 'be',
                     'yet', 'amends', 'law', 'creates', 'illinois', 'act', 'state', '2019'])
 
 def link_to_bs4(url):
+    '''
+    Converts url to a bs4 object.
+    '''
     r = requests.get(url)
     html_text = r.text.encode('iso-8859-1')
     soup = bs4.BeautifulSoup(html_text, "html5lib")
@@ -103,6 +106,15 @@ def link_to_bs4(url):
 
 
 def get_bill_links(limit = None):
+    '''
+    Goes to Illinois General Assembly website (LEG_URL) and puts direct links
+    to bill pages into a list.  If limit is provided, only gathers specified
+    number of links and then stops.
+    Input:
+        Optional limit (int)
+    Output:
+        list of urls (list of strings)
+    '''
     #Get bs4 object from url
     soup = link_to_bs4(LEG_URL)
 
@@ -129,6 +141,17 @@ def get_bill_links(limit = None):
 
 
 def set_short_description(bs4_bill, bill_info, bill_number):
+    '''
+    Given a bs4 object for a bill page, updates the short description of that
+    bill number in the bill_info dictionary.
+    Inputs:
+        bs4_bill - bs4 object for a specific bill
+        bill_info - dictionary of bill information that is modified in place
+        bill_number - bill number (str - e.g. 'HB0001') corresponding to
+                      bs4_bill object used as a key for the dictionary.
+    Outputs:
+        None - modifies the bill_info dictionary in place.
+    '''
     heading_tags = bs4_bill.find_all('span', class_ = "heading2")
     for tag in heading_tags:
         if tag.text.startswith("Short Description"):
@@ -138,6 +161,17 @@ def set_short_description(bs4_bill, bill_info, bill_number):
 
 
 def set_last_action_status(bs4_bill, bill_info, bill_number):
+    '''
+    Given a bs4 object for a bill page, updates the last action and
+    status of that bill number in the bill_info dictionary.
+    Inputs:
+        bs4_bill - bs4 object for a specific bill
+        bill_info - dictionary of bill information that is modified in place
+        bill_number - bill number (str - e.g. 'HB0001') corresponding to
+                      bs4_bill object used as a key for the dictionary.
+    Outputs:
+        None - modifies the bill_info dictionary in place.
+    '''
     heading_tags = bs4_bill.find_all('span', class_ = "heading2")
     for tag in heading_tags:
         if tag.text.startswith("Last Action"):
@@ -153,6 +187,17 @@ def set_last_action_status(bs4_bill, bill_info, bill_number):
                                              'chamber': last_action_chamber}
 
 def set_committee(bs4_bill, bill_info, bill_number):
+    '''
+    Given a bs4 object for a bill page, updates the committee (name and id) of
+    that bill number in the bill_info dictionary.
+    Inputs:
+        bs4_bill - bs4 object for a specific bill
+        bill_info - dictionary of bill information that is modified in place
+        bill_number - bill number (str - e.g. 'HB0001') corresponding to
+                      bs4_bill object used as a key for the dictionary.
+    Outputs:
+        None - modifies the bill_info dictionary in place.
+    '''
     heading_tags = bs4_bill.find_all('span', class_ = "heading2")
     committee = None
     committee_id = None
@@ -171,6 +216,18 @@ def set_committee(bs4_bill, bill_info, bill_number):
     bill_info[bill_number]['committee'] = committee
 
 def set_sponsors(bs4_bill, bill_info, bill_number, chamber):
+    '''
+    Given a bs4 object for a bill page, updates the sponsors of that
+    bill number in the bill_info dictionary for the chamber specified.
+    Inputs:
+        bs4_bill - bs4 object for a specific bill
+        bill_info - dictionary of bill information that is modified in place
+        bill_number - bill number (str - e.g. 'HB0001') corresponding to
+                      bs4_bill object used as a key for the dictionary.
+        chamber - (str) either 'house' or 'senate'
+    Outputs:
+        None - modifies the bill_info dictionary in place.
+    '''
     heading_tags = bs4_bill.find_all('span', class_ = "heading2")
     next_tag = None
     for tag in heading_tags:
@@ -187,6 +244,17 @@ def set_sponsors(bs4_bill, bill_info, bill_number, chamber):
     bill_info[bill_number][str(chamber).lower() + '_sponsors'] = sponsors
 
 def set_synopsis(bs4_bill, bill_info, bill_number):
+    '''
+    Given a bs4 object for a bill page, updates the synopsis of that
+    bill number in the bill_info dictionary.
+    Inputs:
+        bs4_bill - bs4 object for a specific bill
+        bill_info - dictionary of bill information that is modified in place
+        bill_number - bill number (str - e.g. 'HB0001') corresponding to
+                      bs4_bill object used as a key for the dictionary.
+    Outputs:
+        None - modifies the bill_info dictionary in place.
+    '''
     synopsis_list = []
     for tag in bs4_bill.find_all('span', class_ = "content notranslate"):
         synopsis_list.append(tag.text.strip())
@@ -196,6 +264,13 @@ def set_synopsis(bs4_bill, bill_info, bill_number):
 
 
 def process_bill_link(url, bill_info):
+    '''
+    Takes in a url for a specific bill page, obtains the bs4 object from the
+    html, scrapes the bs4 object for basic bill info, and updates the bill_info
+    dictionary with information about that bill.
+    Modifies the dictionary in place with short description, last action,
+        status, committee (if assigned), sponsors, and synopsis.
+    '''
     bs4_bill = link_to_bs4(url)
 
     #Add bill number
@@ -211,6 +286,18 @@ def process_bill_link(url, bill_info):
     set_synopsis(bs4_bill, bill_info, bill_number)
 
 def update_rep_dict(rep_info, url, chamber):
+    '''
+    Given the url for either the House or Senate Representatives page, scrapes
+    basic info about each rep such as name, committees, district, and party.
+    Also adds empty fields for counting number of bills sponsored by topic.
+    Inputs:
+        url - (str) for the chamber webpage
+        chamber - (str) either 'House' or 'Senate'
+        rep_info - dictionary of representative information.  This is modified
+                   in place by the function.
+    Outputs:
+        None - modifies rep_info dictionary in place
+    '''
     soup = link_to_bs4(url)
     tablerow_tags = soup.find_all('td', class_ = "detail")
     for i in range(0,len(tablerow_tags),5):

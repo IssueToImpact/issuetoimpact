@@ -16,8 +16,8 @@ create_bills_table_sql = '''CREATE TABLE bills (
                         synopsis text);'''
 
 create_bill_keywords_table_sql = '''CREATE TABLE bill_keywords (
-                        bill_number text,
-                        keyword text);'''
+                        keyword text,
+                        bill_number text);'''
 
 create_reps_table_sql = '''CREATE TABLE reps (
                         name text PRIMARY KEY,
@@ -56,7 +56,7 @@ create_tweets_table_sql = '''CREATE TABLE tweets (
 
 read_bills = pd.read_csv('bill_table_data.csv', header = 0)
 read_bill_keywords = pd.read_csv('bill_keywords.csv')
-read_reps = pd.read_csv('rep_data.csv', header = 0, usecols = range(1,24))
+read_reps = pd.read_csv('rep_data.csv', header = 0, usecols = range(0,24))
 read_tweets = pd.read_csv('tweets.csv', header = 0)
 
 conn = sqlite3.connect(filename)
