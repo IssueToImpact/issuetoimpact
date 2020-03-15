@@ -1,7 +1,7 @@
 import re
 import json
 
-from standard_twitter_search import twitter_search
+from get_twitter_data.standard_twitter_search import twitter_search
 
 def get_twitter_handles(rep_twitter_file):
     '''
@@ -35,15 +35,21 @@ def update_reps_dict(tweet_json, reps_name, rep_handle, reps_dict):
                         .format(tweet_json['user']['screen_name'], tweet_id)
         reps_dict[rep]['tweets'][tweet_id] = tweet
 
-def search_reps_tweets(rep_twitter_file, reps_json_file):
+def search_rep_twitter_data(reps_json_file='./data/reps.json'):
     '''
     '''
     reps_dict = {}
 
-    reps_twitter_dict = get_twitter_handles(rep_twitter_file)
+    reps_twitter_dict = get_twitter_handles('./data/illinois_reps_twitter_handles.txt')
+    reps_twitter = reps_twitter_dict.keys()
 
-    for i, rep_twitter in enumerate(reps_twitter_dict.keys()):
-        tweets_json = twitter_search(rep_twitter, i, 'users', True)
+    if limit:
+        reps_twitter = reps_twitter[:limit]
+
+    for i, rep_twitter in enumerate(reps_twitter):
+        tweets_json = twitter_search(rep_twitter, i, 'users')
+        if print_to_screen:
+            return tweets_json
         if not tweets_json:
             break
 

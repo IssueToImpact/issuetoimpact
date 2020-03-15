@@ -26,7 +26,7 @@ def call_standard_twitter_api(query_str):
 
     return response.json()
 
-def twitter_search(st, i, search_type='bills', full_search=False):
+def twitter_search(st, i, search_type='bills'):
     '''
     Parse twitter query str and handle twitter rate limiting
 
@@ -40,10 +40,9 @@ def twitter_search(st, i, search_type='bills', full_search=False):
         twitter search api response (json)
         (breaks at i=10 when full_search is False)
     '''
-    if full_search == False and i >= 10:
-        return None
 
     if i != 0 and i % 12 == 0:  # rate limit = 12 rpm
+        print("Twitter search api rate limit...sleeping...")
         time.sleep(60)
 
     if search_type == 'bills':
