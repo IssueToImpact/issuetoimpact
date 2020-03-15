@@ -1,4 +1,3 @@
-
 appnope==0.1.0
 asgiref==3.2.3
 asn1crypto==1.3.0
@@ -6,10 +5,10 @@ attrs==19.3.0
 backcall==0.1.0
 bcrypt==3.1.7
 beautifulsoup4==4.8.2
+bleach==3.1.0
 certifi==2019.11.28
 cffi==1.14.0
 chardet==3.0.4
-chartkick==0.5.0
 cryptography==2.8
 cycler==0.10.0
 decorator==4.4.2
@@ -63,6 +62,9 @@ PySocks==1.7.1
 python-dateutil==2.8.1
 python-utils==2.3.0
 pytz==2019.3
+pyzmq==18.1.1
+qtconsole==4.7.1
+QtPy==1.9.0
 requests==2.23.0
 retrying==1.3.3
 ruamel.yaml==0.15.87
@@ -78,3 +80,8 @@ tornado==6.0.4
 tqdm==4.42.1
 traitlets==4.3.3
 urllib3==1.25.8
+utils==1.0.1
+wcwidth==0.1.8
+webencodings==0.5.1
+widgetsnbextension==3.5.1
+zipp==2.2.0
