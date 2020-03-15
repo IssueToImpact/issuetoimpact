@@ -65,9 +65,9 @@ def find_bills(args_from_ui):
                 tweet_dict[bill].append(tweet)
 
     for bill in revised:
-        bill_num = bill[0]
-        if bill_num in tweet_dict:
-            bill.append(tweet_dict[bill_num])
+        bill_number = bill[0]
+        if bill_number in tweet_dict:
+            bill.append(tweet_dict[bill_number])
         else:
             bill.append([])
 
@@ -83,7 +83,7 @@ def generate_tweets_query(args_from_ui):
         select_cols = '*'
 
         query_string = 'SELECT ' + ', '.join(select_cols)\
-                        + ' FROM tweets WHERE tweets.bill_num'
+                        + ' FROM tweets WHERE tweets.bill_number'
 
         return query_string
 
