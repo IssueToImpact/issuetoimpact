@@ -35,12 +35,10 @@ def find_bills(args_from_ui):
     c = conn.cursor()
 
     query, arg_tuple = generate_bills_query(args_from_ui)
-    print(query, arg_tuple)
     r = c.execute(query, arg_tuple)
 
     results = r.fetchall()
     header = get_header(c)
-    print(results)
     unique_bills = set()
     for item in results:
         unique_bills.add(item[0])
@@ -82,7 +80,7 @@ def generate_tweets_query(args_from_ui):
         select_cols = '*'
 
         query_string = 'SELECT ' + ', '.join(select_cols)\
-                        + ' FROM tweets WHERE tweets.bill_num'
+                        + ' FROM tweets WHERE tweets.bill_number'
 
         return query_string
 
