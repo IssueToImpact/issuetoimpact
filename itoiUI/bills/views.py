@@ -108,7 +108,7 @@ def home(request):
                                 if num > max:
                                     max = num
                                     max_ind = item - 5
-                        max_topic = topic_list[max]
+                        max_topic = topic_list[max_ind]
                         rep_dict[key]['info'].append(max_topic)
                         rep_dict[key]['info'] = tuple(rep_dict[key]['info'])
             else:
