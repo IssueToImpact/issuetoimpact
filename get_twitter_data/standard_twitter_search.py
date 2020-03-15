@@ -2,7 +2,7 @@ import requests
 import json
 import time
 
-import credentials
+TWITTER_HEADER_AUTH='Bearer AAAAAAAAAAAAAAAAAAAAAEqICgEAAAAAizW%2FPFWnJmhQ8%2FHTyOIjeHpm%2FK4%3Dc49oCSPRX8UDbCupscJiksNdMPZ2XjVGHN0GU3hQDEysYvcjXz'
 
 def call_standard_twitter_api(query_str):
     '''

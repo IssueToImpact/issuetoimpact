@@ -84,25 +84,6 @@ def write_hashtag_csv(bill_num, tweet_text, update):
         for h in hashtags:
             f.writerow([bill_num, h])
 
-def write_reps_tweet_csv(reps_json, update):
-    '''
-    '''
-    rep_dict = open_json(reps_json)
-
-    write_type = 'w'
-    if update and path.exists('reps_twitter.csv'):
-        write_type = 'a'
-
-    with open('reps_twitter.csv', write_type) as c:
-        f = csv.writer(c)
-        if write_type == 'w':
-            f.writerow(["rep_name", "rep_twitter_handle", "tweet_id", "tweet_text", "url"])
-
-        for r in rep_dict:
-            for tweet in rep_dict[r]['tweets']:
-                f.writerow([r, rep_dict[r]['twitter_handle'], tweet,
-                           rep_dict[r]['tweets'][tweet]["text"].strip().replace("\n", ""),
-                           rep_dict[r]['tweets'][tweet]["url"]])
 
 def filter_rep_tweet_words(rep_twitter_json, update):
     '''
