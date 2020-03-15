@@ -90,13 +90,12 @@ def home(request):
 
             if address:
                 rep_dict = find_rep_from_address(address)
-                rep_info = []
                 for key in rep_dict.keys():
                     info = get_rep_info(key)
-                    rep_info.append(tuple(info))
+                    rep_dict[key]['info'] = info[0]
+                print(rep_dict)
             else:
                 rep_dict = None
-                rep_info = None
             try:
                 res = find_bills(args)
             except Exception as e:
@@ -126,12 +125,32 @@ def home(request):
         columns, result = res
 
 
+#### Plotting of Rep Info #####
+    # if rep_info:
+    #     divs = []
+    #     for rep, info in rep_info.items():
+    #
+    #         labels = ['Agriculture', 'Budget', 'Commerce_and_Economic_Development',
+    #         'Criminal_Justice','Education','Energy_and_Public_Utilities',
+    #         'Environment','Health','Human_and_Social_Services',
+    #         'Employment_and_Labor','Public_Safety_and_Firearms','Regulation',
+    #         'Taxes','Telecommunications_and_Information_Technology',
+    #         'Transportation','Veterans_Affairs']
+    #         values = list(info[5:21])
+    #
+    #         fig = go.Figure(data=[go.Pie(labels=labels, values=values)])
+    #         graph = fig.to_html(full_html = False)
+    #
+    #         divs.append([graph])
+    #         print(divs)
+
         colnames = [COLUMN_NAMES.get(col, col) for col in columns]
         context['rep_dict'] = rep_dict
-        context['rep_info'] = rep_info
+        #context['rep_info'] = rep_info
         context['result'] = result
         context['num_results'] = len(result)
         context['columns'] = colnames
+        #context['divs'] = divs
 
     context['form'] = form
     return render(request, 'index.html', context)
