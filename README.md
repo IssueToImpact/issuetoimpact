@@ -23,17 +23,21 @@ To provide the user with their representatives’ contact information, the user 
 
 ## Back end
 
-Command line arguments:
+Our backend code consists of modules for scraping data from the Illinois General website (scraper.py), searching Twitter (get_twitter_data.py), aggregating the data (process.py) and creating a sqlite database.  The script main.py is the entry point.
+
+Command line arguments for main.py:
 1. limit (int): set a limit for scraping and twitter api requests (e.g. 10)
 2. print_to_screen (bool): print output to screen (to see each section is working)
 3. load_from_json (bool): load from json instead of scraping
 
 ### To test:
-* Scraping and twitter api: `python3 main.py 10 True False` will test both the scraper and twitter api search (limited to 10 requests) and print output to the screen
+* Scraping and twitter api: `python3 main.py 10 True False` will test both the scraper and twitter api search (limited to 10 requests) and print output to the
+screen.  Note that with only 10 bills, the bill counts and other statistics for
+each representative will be sparse.
 * File and database making functionality - `python3 main.py None False True` will load the data from pre-existing json files, process and generate the sql database.
 After running this you should be able to see that a database called IssuetoImpact.db
 has been created along with several csv files that you can use to check that the
-full legislation and representative data has been processed. 
+full legislation and representative data has been processed.
 
 
 ## Front end:
