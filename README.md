@@ -34,7 +34,7 @@ Command line arguments:
 from pre-existing json files, process and generate the sql database
 
 
-### Front end (to test):
+## Front end:
 * Navigate to itoiUI directory
-* Enter command 'python3 runserver manage.py' (depending on your setup, you may need to run 'python runserver manage.py')
+* Enter command `python3 runserver manage.py` (depending on your setup, you may need to run `python runserver manage.py`)
 * If you get an error that a particular table does not exist, check that the 'IssuetoImpact.db' is at the same level of the directory as manage.py
