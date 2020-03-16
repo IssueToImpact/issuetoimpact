@@ -102,7 +102,6 @@ def output_rep_stats_table(bill_info, rep_info, limit, output_to_screen):
         process.rep_info_to_list(rep_info, rep_name, rep_data)
 
     rep_df = process.calc_rep_ranks(rep_data)
-    print(rep_df)
 
     if not output_to_screen:
         rep_df.to_csv('rep_data.csv', index=False,
