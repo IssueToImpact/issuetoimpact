@@ -30,8 +30,10 @@ Command line arguments:
 
 ### To test:
 * Scraping and twitter api: `python3 main.py 10 True False` will test both the scraper and twitter api search (limited to 10 requests) and print output to the screen
-* File and database making functionality - `python3 main.py None False True` will load the data
-from pre-existing json files, process and generate the sql database
+* File and database making functionality - `python3 main.py None False True` will load the data from pre-existing json files, process and generate the sql database.
+After running this you should be able to see that a database called IssuetoImpact.db
+has been created along with several csv files that you can use to check that the
+full legislation and representative data has been processed. 
 
 
 ## Front end:
@@ -42,6 +44,6 @@ from pre-existing json files, process and generate the sql database
 # Example searches:
 * Searching the keyword 'energy' should return a number of bills, including SB1781 which has tweets
 * Searching the keyword 'voucher' should return a number of bills, including SB3416, which has tweets
-* Two addresses with different reps are: 
+* Two addresses with different reps are:
 * 5300 S Shore Dr, Chicago, IL 60615
 * 2825 S Archer Ave, Chicago, IL 60608
