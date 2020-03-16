@@ -29,4 +29,5 @@ Command line arguments:
 
 ### To test:
 * Scraping and twitter api: `python3 main.py 10 True False` will test both the scraper and twitter api search (limited to 10 requests) and print output to the screen
-* File and database making functionality - `python3 main.py None False True`
+* File and database making functionality - `python3 main.py None False True` will load the data
+from pre-existing json files, process and generate the sql database
