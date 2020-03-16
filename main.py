@@ -1,4 +1,6 @@
 import sys
+import os
+from os import path
 
 sys.path.append('./legislation')
 import Leg_Scraper
@@ -27,16 +29,19 @@ def go(limit, print_to_screen, load_from_json):
     print("*** Running legislation scraper ***\n")
     Leg_Scraper.get_legislation_data(limit, print_to_screen, load_from_json)
 
-    print("\n*** Searching twitter api for bill tweets ***\n")
-    search_bills.search_bill_tweets('data/bill_scraped_info.json', limit, print_to_screen)
+    if not load_from_json:
+        print("\n*** Searching twitter api for bill tweets ***\n")
+        search_bills.search_bill_tweets('data/bill_scraped_info.json', limit, print_to_screen)
 
-    print("\n*** Searching twitter api for reps tweets ***\n")
-    rep_twitter_search.search_rep_twitter_data(limit, print_to_screen)
+        print("\n*** Searching twitter api for reps tweets ***\n")
+        rep_twitter_search.search_rep_twitter_data(limit, print_to_screen)
 
     print("\n*** Processing twitter data ***\n")
     process_twitter.generate_csvs(print_to_screen)
 
     print("\n*** Creating database ***")
+    if path.exists('IssuetoImpact.db'):
+        os.remove('IssuetoImpact.db')
     csv_to_sql_db.make_database('IssuetoImpact.db')
     print("Database created.")
 
@@ -47,9 +52,12 @@ if __name__=='__main__':
     load_from_json = False
 
     if len(sys.argv[1:]) == 3:
-        limit = int(sys.argv[1])
-        print_to_screen = sys.argv[2]
-        load_from_json = sys.argv[3]
+        if sys.argv[1] == 'None':
+            limit = None
+        else:
+            limit = int(sys.argv[1])
+        print_to_screen = (sys.argv[2] == 'True')
+        load_from_json = (sys.argv[3] == 'True')
     else:
         print("Command line arguments not submitted, using defaults...")
 
