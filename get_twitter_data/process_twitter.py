@@ -1,10 +1,12 @@
 import json
 import csv
 import re
-import os.path
+import os
 from os import path
 
 from get_twitter_data.rep_twitter_search import get_twitter_handles
+
+DIR = os.path.dirname(os.path.abspath(__file__))
 
 def open_json(filename):
     '''
@@ -17,6 +19,8 @@ def generate_users_bills_table(users_filename):
     '''
     '''
     reps_twitter = get_twitter_handles()
+
+    users_file =  os.path.join(DIR, users_filename)
 
     users_dict = open_json(users_filename)
     illinois_list = ['IL', 'Il', 'Illinois', 'illinois', 'Chicago', 'chicago']
@@ -86,8 +90,8 @@ def write_hashtag_csv(bill_num, tweet_text):
 def generate_csvs(output_path, print_to_screen):
     '''
     '''
-    generate_users_bills_table('./data/users.json')
-    write_bill_tweet_tables('./data/tweets.json')
+    generate_users_bills_table(DIR + '/users.json')
+    write_bill_tweet_tables(DIR +'/tweets.json')
 
     if print_to_screen:
         print("saving files:")

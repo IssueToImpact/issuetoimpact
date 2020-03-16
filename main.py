@@ -8,19 +8,9 @@ from get_twitter_data import rep_twitter_search
 from get_twitter_data import search_bills
 from get_twitter_data import process_twitter
 
-def go(argvs):
+def go(limit, print_to_screen, load_from_json):
     '''
     '''
-    limit = None
-    print_to_screen = False
-    load_from_json = False
-
-    if len(argvs) == 3:
-        limit = int(argvs[0])
-        print_to_screen = argvs[1]
-        load_from_json = argvs[2]
-    elif len(argvs) != 0:
-        return "please provide 3 arguments"
 
     if print_to_screen:
         print("*** Running legislation scraper ***\n")
@@ -39,6 +29,16 @@ def go(argvs):
     process_twitter.generate_csvs('./data/', print_to_screen)
 
 
-
 if __name__=='__main__':
-    go(sys.argv[1:])
+    '''
+    '''
+    limit = None
+    print_to_screen = False
+    load_from_json = False
+
+    if len(sys.argv[1:]) == 3:
+        limit = int(sys.argv[1])
+        print_to_screen = sys.argv[2]
+        load_from_json = sys.argv[3]
+
+    go(limit, print_to_screen, load_from_json)
