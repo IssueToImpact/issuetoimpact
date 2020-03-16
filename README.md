@@ -39,9 +39,9 @@ from pre-existing json files, process and generate the sql database
 * Enter command `python3 runserver manage.py` (depending on your setup, you may need to run `python runserver manage.py`)
 * If you get an error that a particular table does not exist, check that the 'IssuetoImpact.db' is at the same level of the directory as manage.py
 
-* Example searches:
-** Searching the keyword 'energy' should return a number of bills, including SB1781 which has tweets
-** Searching the keyword 'voucher' should return a number of bills, including SB3416, which has tweets
-** Two addresses with different reps are: 
-*** 5300 S Shore Dr, Chicago, IL 60615
-*** 2825 S Archer Ave, Chicago, IL 60608
+# Example searches:
+* Searching the keyword 'energy' should return a number of bills, including SB1781 which has tweets
+* Searching the keyword 'voucher' should return a number of bills, including SB3416, which has tweets
+* Two addresses with different reps are: 
+* 5300 S Shore Dr, Chicago, IL 60615
+* 2825 S Archer Ave, Chicago, IL 60608
