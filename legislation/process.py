@@ -88,6 +88,10 @@ INDEX_IGNORE = set(['a', 'also', 'an', 'and', 'are', 'as', 'at', 'be',
 
 
 def set_keywords(bill_info, bill_number):
+    '''
+    Pulls out keywords from bill synopsis and short description.  Adds these
+    to the bill_info dictionary.
+    '''
     keyword_list = []
     terms = bill_info[bill_number]['short_description'].lower().split("-")
     words = []
@@ -104,6 +108,10 @@ def set_keywords(bill_info, bill_number):
 
 
 def set_status(bill_info, bill_number):
+    '''
+    Uses the last action for a bill (from bill_info dictionary) to set the
+    status of the bill - modifies the bill_info dictionary in place.
+    '''
     last_action = bill_info[bill_number]['last_action']['action']
     if last_action == 'Referred to Assignments':
         bill_status = 'In process - not yet assigned to committee'
@@ -115,17 +123,31 @@ def set_status(bill_info, bill_number):
 
 
 def set_topics(bill_info, bill_number):
+    '''
+    Uses the committee assignment for a given bill number to determine the
+    topic of the bill - modifies the bill_info dictionary in place.
+    '''
     bill_info[bill_number]['topic'] = COMMITTEE_TOPICS[
                                       bill_info[bill_number]['committee_id']]
 
 
 def set_primary_sponsor(bill_info, bill_number, rep_info):
+    '''
+    Finds the primary sponsor in the list of sponsors for a given bill number.
+    Modifies the bill_info dictionary in place with the name and party of the
+    primary sponsor.
+    '''
     chamber = 'senate' if bill_number.startswith('S') else 'house'
     primary_sponsor = bill_info[bill_number][chamber + '_sponsors'][0]
     party = rep_info[primary_sponsor]['party']
     bill_info[bill_number]['primary_sponsor'] = primary_sponsor + " (" + party + ")"
 
 def set_rep_bill_counts(bill_info, rep_info):
+    '''
+    Iterates through bills and aggregates bill counts by topic for the primary
+    sponsor in rep_info dictionary.  Returns nothing, modifies rep_info in
+    place.
+    '''
     for bill_num, bill_dict in bill_info.items():
         sponsors = []
         if bill_dict['senate_sponsors']:
@@ -144,6 +166,15 @@ def set_rep_bill_counts(bill_info, rep_info):
                 rep_info[sponsor]['bills']['topic counts'][topic] += 1
 
 def bill_info_to_list(bill_info, bill_number, bills_table_data):
+    '''
+    Appends a list of bill characteristics to a list of lists - to be output to
+    a csv.
+    Inputs:
+        bill_info - dictionary of bill Information
+        bill_number - string that starts with SB or HB and a 4 digit number
+        bills_table_data - list of lists
+    Output: Nothing, modifies bills_table_data in place
+    '''
     chamber = bill_info[bill_number]['last_action']['chamber']
     status = bill_info[bill_number]['status']
     topic = bill_info[bill_number]['topic']
@@ -161,13 +192,40 @@ def bill_info_to_list(bill_info, bill_number, bills_table_data):
                              synopsis])
 
 def bill_keywords_to_list(bill_info, bill_number, bill_keywords):
+    '''
+    Appends a list of bill keyword pairs to a list of lists - to be output to
+    a csv.
+    Inputs:
+        bill_info - dictionary of bill Information
+        bill_number - string that starts with SB or HB and a 4 digit number
+        bill_keywords - list of lists
+    Output: Nothing, modifies bill_keywords in place
+    '''
     for keyword in set(bill_info[bill_number]['keywords']):
         bill_keywords.append([keyword, bill_number])
 
 def bill_topics_to_list(bill_info, bill_number, bill_topics):
+    '''
+    Appends a list of bill topic pairs to a list of lists - to be output to
+    a csv.
+    Inputs:
+        bill_info - dictionary of bill Information
+        bill_number - string that starts with SB or HB and a 4 digit number
+        bill_topics - list of lists
+    Output: Nothing, modifies bill_topics in place
+    '''
     bill_topics.append([bill_number, bill_info[bill_number]['topic']])
 
 def rep_info_to_list(rep_info, rep_name, rep_data):
+    '''
+    Appends a list of rep characteristics to a list of lists - to be output to
+    a csv.
+    Inputs:
+        rep_info - dictionary of rep Information
+        rep_name - string
+        rep_data - list of lists
+    Output: Nothing, modifies rep_data in place
+    '''
     rep_data_row = [rep_name,
                      rep_info[rep_name]['party'],
                      rep_info[rep_name]['district'],
@@ -183,6 +241,12 @@ def rep_info_to_list(rep_info, rep_name, rep_data):
 
 
 def calc_rep_ranks(rep_data):
+    '''
+    Takes a list of lists, converts to a dataframe and calculates pass rate and
+    ranks each representative according to pass rate and bills sponsored within 
+    their pary.
+    Output: dataframe
+    '''
     column_headers = {0:'name', 1:'party', 2:'district', 3:'count sponsored', 4:'count passed'}
     for i, topic in enumerate(TOPICS):
         column_headers[i+5] = topic

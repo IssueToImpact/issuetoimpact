@@ -87,7 +87,7 @@ def output_bill_csvs(bill_info, rep_info, output_to_screen):
                                                           'primary_sponsor',
                                                           'bill_url',
                                                           'synopsis'])
-        data_to_csv(bill_keywords, 'bill_keywords.csv', ['bill_number', 'keyword'])
+        data_to_csv(bill_keywords, 'bill_keywords.csv', ['keyword', 'bill_number'])
         data_to_csv(bill_topics, 'bill_topics.csv', ['bill_number', 'topic'])
     return (bills_table_data, bill_keywords, bill_topics)
 
@@ -104,13 +104,38 @@ def output_rep_stats_table(bill_info, rep_info, limit, output_to_screen):
     rep_df = process.calc_rep_ranks(rep_data)
 
     if not output_to_screen:
-        rep_df.to_csv('rep_data.csv', index=False)
+        rep_df.to_csv('rep_data.csv', index=False,
+                      header = ['name',
+                                'party',
+                                'district',
+                                'count_sponsored,count_passed',
+                                'Agriculture',
+                                'Budget',
+                                'Commerce_and_Economic_Development',
+                                'Criminal_Justice',
+                                'Education',
+                                'Energy_and_Public_Utilities',
+                                'Environment',
+                                'Health',
+                                'Human_and_Social_Services',
+                                'Employment_and_Labor',
+                                'Public_Safety_and_Firearms',
+                                'Regulation',
+                                'Taxes',
+                                'Telecommunications_and_Information_Technology',
+                                'Transportation',
+                                'Veterans_Affairs',
+                                'pass_rate,sponsored_rank_in_party',
+                                'pass_rate_rank_in_party'])
 
     return rep_df
 
 
 def print_bill_info_to_screen(bill_info, limit):
     '''
+    Prints bill information to screen.
+    Inputs:
+        limit - number of entries to print
     '''
     print("Basic dictionary of scraped bill info:")
     if limit:
@@ -118,6 +143,7 @@ def print_bill_info_to_screen(bill_info, limit):
         for bill_number in bill_info.keys():
             print("Bill number: ", bill_number)
             print(bill_info[bill_number])
+            print("\n\n")
             ct += 1
             if ct >= limit: break
     else:
@@ -125,6 +151,9 @@ def print_bill_info_to_screen(bill_info, limit):
 
 def print_bill_tables_to_screen(bills_table_data, bill_keywords, bill_topics, limit):
     '''
+    Prints bill information , bill-keyword pairs, bill-topics to screen.
+    Inputs:
+        limit - number of entries to print
     '''
     print("Bills data:")
     print('Columns are: ["bill_number", "chamber", "status",\
@@ -140,6 +169,9 @@ def print_bill_tables_to_screen(bills_table_data, bill_keywords, bill_topics, li
 
 def print_rep_statistics(rep_info, limit):
     '''
+    Prints representative info to screen.
+    Inputs:
+        limit - number of entries to print
     '''
     print("Dictionary of rep info:")
     if limit:
@@ -147,6 +179,7 @@ def print_rep_statistics(rep_info, limit):
         for rep_name in rep_info.keys():
             print("Rep Name: ", rep_name)
             print(rep_info[rep_name])
+            print('\n\n')
             ct += 1
             if ct >= limit: break
     else:
@@ -154,6 +187,12 @@ def print_rep_statistics(rep_info, limit):
 
 def get_legislation_data(limit, output_to_screen, load_from_json):
     '''
+    Gets legislation data.
+    If output_to_screen is True - prints data to screen (limit)
+    If load_from_json is True - skips scraping Illinois General Assembly website
+        and loads data from a json file.
+    If load_from_json is False - scrapes info from Illinois General assembly
+        website.
     '''
     # arg parse stuff
 
