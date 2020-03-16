@@ -10,6 +10,7 @@ DIR = os.path.dirname(os.path.abspath(__file__))
 
 def open_json(filename):
     '''
+    Load json file into dict
     '''
     with open(filename) as ji:
         json_str = ji.read()
@@ -17,6 +18,12 @@ def open_json(filename):
 
 def generate_users_bills_table(users_filename):
     '''
+    Create users bill csv
+
+    Inputs:
+        filename (str) of file to be read in
+    Returns:
+        creates csv
     '''
     reps_twitter = get_twitter_handles()
 
@@ -44,6 +51,12 @@ def generate_users_bills_table(users_filename):
 
 def write_bill_tweet_csv(bill_num, tweet_id, tweet):
     '''
+    Add tweet data to csv
+
+    Inputs:
+        bill_num (str) bill to update
+        tweet_id (int) of the tweet being updated
+        tweet (dict)
     '''
     write_type = 'w'
 
@@ -60,18 +73,13 @@ def write_bill_tweet_csv(bill_num, tweet_id, tweet):
                     tweet["created_at"], tweet["user"],
                     tweet["url"]])
 
-def write_bill_tweet_tables(tweet_json):
-    '''
-    '''
-    tweet_dict = open_json(tweet_json)
-
-    for bill_num in tweet_dict:
-        for tweet in tweet_dict[bill_num]:
-            write_bill_tweet_csv(bill_num, tweet, tweet_dict[bill_num][tweet])
-            write_hashtag_csv(bill_num, tweet_dict[bill_num][tweet]["full_text"])
-
 def write_hashtag_csv(bill_num, tweet_text):
     '''
+    Update hashtag csv
+
+    Inputs:
+        bill_num (str) bill to update
+        tweet_text (str)
     '''
     write_type = 'w'
 
@@ -87,8 +95,25 @@ def write_hashtag_csv(bill_num, tweet_text):
         for h in hashtags:
             f.writerow([bill_num, h])
 
-def generate_csvs(output_path, print_to_screen):
+def write_bill_tweet_tables(tweet_json):
     '''
+    Create csvs from tweet json
+    '''
+    tweet_dict = open_json(tweet_json)
+
+    for bill_num in tweet_dict:
+        for tweet in tweet_dict[bill_num]:
+            write_bill_tweet_csv(bill_num, tweet, tweet_dict[bill_num][tweet])
+            write_hashtag_csv(bill_num, tweet_dict[bill_num][tweet]["full_text"])
+
+def generate_csvs(print_to_screen):
+    '''
+    Entry point for process twitter. Generate csvs from json
+
+    Inputs:
+        print_to_screen (bool): command line argument
+    Returns:
+        generates csvs for use in UI database
     '''
     generate_users_bills_table(DIR + '/users.json')
     write_bill_tweet_tables(DIR +'/tweets.json')
