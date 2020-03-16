@@ -41,9 +41,8 @@ Command line arguments:
 3. load_from_json (bool): load from json instead of scraping
 
 ### To test:
-* Scraping and twitter api: `python3 main.py 10 True False` will test both the scraper and twitter api search (limited to 10 requests) and print output to the screen
-* File and database making functionality - `python3 main.py None False True` will load the data
-from pre-existing json files, process and generate the sql database
+* Scraping and twitter api: `python3 main.py 10 True False` will test both the scraper and twitter api search (limited to 10 requests) and print output to the screen.  Note that using only 10 bills will result in sparse data in the representative data.
+* File and database making functionality - `python3 main.py None False True` will load the data from pre-existing json files, process and generate the sql database
 After running this you should be able to see that a database called IssuetoImpact.db
 has been created along with several csv files that you can use to check that the
 full legislation and representative data has been processed.
