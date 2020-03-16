@@ -2,7 +2,7 @@
 
 This project aims to increase participation in democracy by making issue/legislation advocacy easy and quick for political non-experts.
 
-Our platform that allows a user to search for active legislation by topic and provides all the information t needed to gain a basic understanding of the legislation and then contact their representative.
+Our platform allows a user to search for active legislation by topic and provides all the information needed to gain a basic understanding of the legislation and then contact their representative.
 
 We combine information from the Illinois General Assembly website with mentions on Twitter along with the contact information for relevant representatives based on the user's location and a generic template for what to write/say. Users can also search for their representative and get back basic information about their record.
 
