@@ -12,7 +12,8 @@ def open_json(filename):
     '''
     Load json file into dict
     '''
-    with open(filename) as ji:
+    filepath = os.path.join(DIR, filename)
+    with open(filepath) as ji:
         json_str = ji.read()
         return json.loads(json_str)
 
@@ -27,9 +28,8 @@ def generate_users_bills_table(users_filename):
     '''
     reps_twitter = get_twitter_handles()
 
-    users_file =  os.path.join(DIR, users_filename)
-
     users_dict = open_json(users_filename)
+
     illinois_list = ['IL', 'Il', 'Illinois', 'illinois', 'Chicago', 'chicago']
 
     write_type = 'w'
@@ -116,7 +116,7 @@ def generate_csvs(print_to_screen):
         generates csvs for use in UI database
     '''
     generate_users_bills_table(DIR + '/users.json')
-    write_bill_tweet_tables(DIR +'/tweets.json')
+    write_bill_tweet_tables(DIR + '/tweets.json')
 
     if print_to_screen:
         print("saving files:")

@@ -52,7 +52,10 @@ if __name__=='__main__':
     load_from_json = False
 
     if len(sys.argv[1:]) == 3:
-        limit = int(sys.argv[1])
+        if sys.argv[1] == 'None':
+            limit = None
+        else:
+            limit = int(sys.argv[1])
         print_to_screen = (sys.argv[2] == 'True')
         load_from_json = (sys.argv[3] == 'True')
     else:

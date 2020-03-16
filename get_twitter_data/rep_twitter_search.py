@@ -51,7 +51,8 @@ def update_reps_dict(tweet_json, reps_name, rep_handle, reps_dict):
                         .format(tweet_json['user']['screen_name'], tweet_id)
         reps_dict[rep]['tweets'][tweet_id] = tweet
 
-def search_rep_twitter_data(limit, print_to_screen, reps_json_file='./data/reps.json'):
+def search_rep_twitter_data(limit, print_to_screen,
+                            reps_json_file='./data/reps.json'):
     '''
     Call twitter search api with reps twitter handles
 
@@ -60,7 +61,7 @@ def search_rep_twitter_data(limit, print_to_screen, reps_json_file='./data/reps.
         print_to_screen (bool): for debugging/marking - check twitter response
 
     Returns:
-        outputs json file of processed twitter responses 
+        outputs json file of processed twitter responses
     '''
     reps_dict = {}
 
