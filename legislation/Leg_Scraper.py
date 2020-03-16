@@ -102,7 +102,6 @@ def output_rep_stats_table(bill_info, rep_info, limit, output_to_screen):
         process.rep_info_to_list(rep_info, rep_name, rep_data)
 
     rep_df = process.calc_rep_ranks(rep_data)
-    print(rep_df)
 
     if not output_to_screen:
         rep_df.to_csv('rep_data.csv', index=False,
@@ -160,13 +159,11 @@ def print_bill_tables_to_screen(bills_table_data, bill_keywords, bill_topics, li
     print('Columns are: ["bill_number", "chamber", "status",\
                         "last_action_date", "topic", "primary_sponsor", \
                         "bill_url", "synopsis"]')
-    print(bills_table_data[:limit])
+    print(bills_table_data[:10])
     print('\n\n')
     print("Bill-keyword pairs:")
-    print(bill_keywords[:limit])
+    print(bill_keywords[:10])
     print('\n\n')
-    print("Bill-topics:")
-    print(bill_topics[:limit])
 
 def print_rep_statistics(rep_info, limit):
     '''
