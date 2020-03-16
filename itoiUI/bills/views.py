@@ -97,19 +97,20 @@ def home(request):
 
             if address:
                 rep_dict = find_rep_from_address(address)
-                for key in rep_dict.keys():
-                    info = get_rep_info(key)
-                    rep_dict[key]['info'] = list(info[0])
-                    max = 0
-                    max_ind = 0
-                    for item, num in enumerate(rep_dict[key]['info']):
-                        if item >= 5 and item <= 20:
-                            if num > max:
-                                max = num
-                                max_ind = item - 5
-                    max_topic = topic_list[max]
-                    rep_dict[key]['info'].append(max_topic)
-                    rep_dict[key]['info'] = tuple(rep_dict[key]['info'])
+                if rep_dict:
+                    for key in rep_dict.keys():
+                        info = get_rep_info(key)
+                        rep_dict[key]['info'] = list(info[0])
+                        max = 0
+                        max_ind = 0
+                        for item, num in enumerate(rep_dict[key]['info']):
+                            if item >= 5 and item <= 20:
+                                if num > max:
+                                    max = num
+                                    max_ind = item - 5
+                        max_topic = topic_list[max_ind]
+                        rep_dict[key]['info'].append(max_topic)
+                        rep_dict[key]['info'] = tuple(rep_dict[key]['info'])
             else:
                 rep_dict = None
             try:
@@ -119,7 +120,7 @@ def home(request):
                 print(e)
                 bt = traceback.format_exception(*sys.exc_info()[:3])
                 context['err'] = """
-                An exception was thrown in find_courses:
+                An exception was thrown in find_bills:
                 <pre>{}
 {}</pre>
                 """.format(e, '\n'.join(bt))
