@@ -20,8 +20,20 @@ Users can enter search terms and/or select which topics they want to search by. 
 To provide the user with their representatives’ contact information, the user enters  an address and we connect to the Open States API and return representatives and their contact info (address, phone number, email) as well as some analysis on their bill sponsorship and legislation pass rate.
 
 ### To test:
+* Navigate to itoiUI directory
+* Enter command `python3 runserver manage.py` (depending on your setup, you may need to run `python runserver manage.py`)
+* If you get an error that a particular table does not exist, check that the 'IssuetoImpact.db' is at the same level of the directory as manage.py
+
+#### Example searches:
+* Searching the keyword 'energy' should return a number of bills, including SB1781 which has tweets
+* Searching the keyword 'voucher' should return a number of bills, including SB3416, which has tweets
+* Two addresses with different reps are:
+* 5300 S Shore Dr, Chicago, IL 60615
+* 2825 S Archer Ave, Chicago, IL 60608
 
 ## Back end
+
+The backend consists of modules for scraping data from the Illinois General website (scraper.py), searching Twitter (get_twitter_data.py), and aggregating the data (process.py & process_twitter.py) into a sqlite database for use by the front end.
 
 Command line arguments:
 1. limit (int): set a limit for scraping and twitter api requests (e.g. 10)
@@ -32,16 +44,3 @@ Command line arguments:
 * Scraping and twitter api: `python3 main.py 10 True False` will test both the scraper and twitter api search (limited to 10 requests) and print output to the screen
 * File and database making functionality - `python3 main.py None False True` will load the data
 from pre-existing json files, process and generate the sql database
-
-
-## Front end:
-* Navigate to itoiUI directory
-* Enter command `python3 runserver manage.py` (depending on your setup, you may need to run `python runserver manage.py`)
-* If you get an error that a particular table does not exist, check that the 'IssuetoImpact.db' is at the same level of the directory as manage.py
-
-# Example searches:
-* Searching the keyword 'energy' should return a number of bills, including SB1781 which has tweets
-* Searching the keyword 'voucher' should return a number of bills, including SB3416, which has tweets
-* Two addresses with different reps are: 
-* 5300 S Shore Dr, Chicago, IL 60615
-* 2825 S Archer Ave, Chicago, IL 60608
