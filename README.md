@@ -14,9 +14,10 @@ Run `source install.sh` to set up virtual environment
 
 ## Front end
 
-Our platform is a Django user interface which connects to the sqlite database and queries based on various filters provided by the user.
+Our platform is a Django user interface which connects to a sqlite database and queries based on various filters provided by the user.
 
-To provide the user with their representatives’ contact information, the user enters  an address and we connect to the Open States API and return representatives and their contact info (address, phone number, email).  
+Users can enter search terms and/or select which topics they want to search by. Our platform queries the database, and displays bills relevant to the search criteria entered as well as relevant tweets pertaining to that bill (if relevant tweets exist).
+To provide the user with their representatives’ contact information, the user enters  an address and we connect to the Open States API and return representatives and their contact info (address, phone number, email) as well as some analysis on their bill sponsorship and legislation pass rate.
 
 ### To test:
 
@@ -31,3 +32,9 @@ Command line arguments:
 * Scraping and twitter api: `python3 main.py 10 True False` will test both the scraper and twitter api search (limited to 10 requests) and print output to the screen
 * File and database making functionality - `python3 main.py None False True` will load the data
 from pre-existing json files, process and generate the sql database
+
+
+### Front end (to test):
+* Navigate to itoiUI directory
+* Enter command 'python3 runserver manage.py' (depending on your setup, you may need to run 'python runserver manage.py')
+* If you get an error that a particular table does not exist, check that the 'IssuetoImpact.db' is at the same level of the directory as manage.py
