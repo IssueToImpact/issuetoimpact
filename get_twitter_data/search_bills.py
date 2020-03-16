@@ -7,10 +7,8 @@ def find_active_bills(bill_info_file):
     '''
     Generate list of bill numbers for bills that are active (have a committee
     and last date is within the past month)
-
     Inputs:
         bill_json_file (str): location of bill_info json file
-
     Returns:
         list of bill numbers
     '''
@@ -30,7 +28,6 @@ def find_active_bills(bill_info_file):
 def update_tweet_dict(tweet_json, bill_num, tweet_dict):
     '''
     Update tweet dictionary with tweet information
-
     Inputs:
         tweet_json (json): response from twitter api
         bill_num (str): bill number
@@ -50,7 +47,6 @@ def update_tweet_dict(tweet_json, bill_num, tweet_dict):
 def update_users_dict(tweet_json, bill_num, users_dict):
     '''
     Update users dictionary with tweet information
-
     Inputs:
         tweet_json (json): response from twitter api
         bill_num (str): bill number
@@ -80,7 +76,6 @@ def get_data_from_tweet(tweets, bill_num, tweet_dict, users_dict):
 def save_to_json_file(dict, output_filename):
     '''
     Save dictionary to json file
-
     Inputs:
         dict: the dict to save
         output_filename: the file to create
@@ -91,7 +86,6 @@ def save_to_json_file(dict, output_filename):
 def search_bill_tweets(bill_info_file, limit, print_to_screen, tweet_json_file='data/bill_info.json', users_json_file='data/users_info.json'):
     '''
     Search tweets referencing bill numbers in illinois
-
     Inputs:
         tweet_json_file (str): output filename for tweets file
         bill_info_file (str): output filename for users file
@@ -108,8 +102,8 @@ def search_bill_tweets(bill_info_file, limit, print_to_screen, tweet_json_file='
 
     for i, bill_num in enumerate(active_bills):
         tweets_json = twitter_search(bill_num, i, 'bills')
-        if print_to_screen:
-            return active_bills
+        if print_to_screen and i == 0:
+            print(json.dumps(tweets_json, indent=2))
         if not tweets_json:
             break
         get_data_from_tweet(tweets_json, bill_num, tweet_dict, users_dict)

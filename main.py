@@ -36,7 +36,9 @@ def go(argvs):
 
     if print_to_screen:
         print("\n*** Processing twitter data ***\n")
-    process_twitter.generate_csvs('./data/')
+    process_twitter.generate_csvs('./data/', print_to_screen)
+
+
 
 if __name__=='__main__':
     go(sys.argv[1:])

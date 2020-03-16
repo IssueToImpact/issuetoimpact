@@ -1,13 +1,18 @@
 import re
 import json
+import os
 
 from get_twitter_data.standard_twitter_search import twitter_search
 
-def get_twitter_handles(rep_twitter_file):
+DIR = os.path.dirname(os.path.abspath(__file__))
+
+def get_twitter_handles():
     '''
     '''
+    file = os.path.join(DIR, 'illinois_reps_twitter_handles.txt')
+
     reps_twitter_handles = {}
-    with open(rep_twitter_file) as input:
+    with open(file) as input:
         for line in input:
             r = re.search(r"(.+?(?=@))@([\w.]+)", line)
             name, twitter_handle = r.groups()
@@ -35,21 +40,21 @@ def update_reps_dict(tweet_json, reps_name, rep_handle, reps_dict):
                         .format(tweet_json['user']['screen_name'], tweet_id)
         reps_dict[rep]['tweets'][tweet_id] = tweet
 
-def search_rep_twitter_data(reps_json_file='./data/reps.json'):
+def search_rep_twitter_data(limit, print_to_screen, reps_json_file='./data/reps.json'):
     '''
     '''
     reps_dict = {}
 
-    reps_twitter_dict = get_twitter_handles('./data/illinois_reps_twitter_handles.txt')
-    reps_twitter = reps_twitter_dict.keys()
+    reps_twitter_dict = get_twitter_handles()
+    reps_twitter = list(reps_twitter_dict.keys())
 
     if limit:
         reps_twitter = reps_twitter[:limit]
 
     for i, rep_twitter in enumerate(reps_twitter):
         tweets_json = twitter_search(rep_twitter, i, 'users')
-        if print_to_screen:
-            return tweets_json
+        if print_to_screen and i == 0:
+            print(json.dumps(tweets_json, indent=2))
         if not tweets_json:
             break
 

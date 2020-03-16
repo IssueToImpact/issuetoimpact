@@ -28,7 +28,7 @@ def call_openstates_api(lat, long):
         lat (float): address latitude
         long (float): address longitude
     Returns:
-        api call response json
+        Api call response json
     '''
     query = """
     {{

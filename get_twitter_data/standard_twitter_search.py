@@ -7,7 +7,6 @@ TWITTER_HEADER_AUTH='Bearer AAAAAAAAAAAAAAAAAAAAAEqICgEAAAAAizW%2FPFWnJmhQ8%2FHT
 def call_standard_twitter_api(query_str):
     '''
     Call twitter standard search api
-
     Inputs:
     '''
     twitter_standard_api = 'https://api.twitter.com/1.1/search/tweets.json'
@@ -29,13 +28,11 @@ def call_standard_twitter_api(query_str):
 def twitter_search(st, i, search_type='bills'):
     '''
     Parse twitter query str and handle twitter rate limiting
-
     Inputs:
         st (string) input to call search api with
         i (int): index of the st in list to be called
         search_type (st): 'bills' or 'users' for different search queries
         full_search: run search of full list, or break after 10 calls
-
     Returns:
         twitter search api response (json)
         (breaks at i=10 when full_search is False)
