@@ -87,8 +87,9 @@ def search_bill_tweets(bill_info_file, limit, print_to_screen, tweet_json_file='
     '''
     Search tweets referencing bill numbers in illinois
     Inputs:
-        tweet_json_file (str): output filename for tweets file
         bill_info_file (str): output filename for users file
+        limit (int): command line argument (limits number of requests made)
+        print_to_screen (bool): for debugging/marking - check twitter response
     Returns:
         generates tweets and users json file
     '''

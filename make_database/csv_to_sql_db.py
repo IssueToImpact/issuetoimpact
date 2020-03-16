@@ -2,9 +2,6 @@ import sqlite3
 import pandas as pd
 from pandas import DataFrame
 
-
-filename = 'IssuetoImpact.db'
-
 create_bills_table_sql = '''CREATE TABLE bills (
                         bill_number text PRIMARY KEY,
                         chamber text,
@@ -53,20 +50,28 @@ create_tweets_table_sql = '''CREATE TABLE tweets (
                         user text,
                         url text);'''
 
+def make_database(db_name):
+    '''
+    Create sql database from csvs
 
-read_bills = pd.read_csv('bill_table_data.csv', header = 0)
-read_bill_keywords = pd.read_csv('bill_keywords.csv')
-read_reps = pd.read_csv('rep_data.csv', header = 0, usecols = range(0,24))
-read_tweets = pd.read_csv('tweets.csv', header = 0)
+    Input:
+        db_name (str)
+    Returns:
+        creates sql database
+    '''
+    read_bills = pd.read_csv('./data/bill_table_data.csv', header = 0)
+    read_bill_keywords = pd.read_csv('./data/bill_keywords.csv')
+    read_reps = pd.read_csv('./data/rep_data.csv', header = 0, usecols = range(1,24))
+    read_tweets = pd.read_csv('./data/tweets.csv', header = 0)
 
-conn = sqlite3.connect(filename)
-c = conn.cursor()
-c.execute(create_bills_table_sql)
-c.execute(create_bill_keywords_table_sql)
-c.execute(create_reps_table_sql)
-c.execute(create_tweets_table_sql)
+    conn = sqlite3.connect(db_name)
+    c = conn.cursor()
+    c.execute(create_bills_table_sql)
+    c.execute(create_bill_keywords_table_sql)
+    c.execute(create_reps_table_sql)
+    c.execute(create_tweets_table_sql)
 
-read_bills.to_sql('bills', conn, if_exists='append', index = False)
-read_bill_keywords.to_sql('bill_keywords', conn, if_exists='append', index = False)
-read_reps.to_sql('reps', conn, if_exists='append', index = False)
-read_tweets.to_sql('tweets', conn, if_exists='append', index = False)
+    read_bills.to_sql('bills', conn, if_exists='append', index = False)
+    read_bill_keywords.to_sql('bill_keywords', conn, if_exists='append', index = False)
+    read_reps.to_sql('reps', conn, if_exists='append', index = False)
+    read_tweets.to_sql('tweets', conn, if_exists='append', index = False)

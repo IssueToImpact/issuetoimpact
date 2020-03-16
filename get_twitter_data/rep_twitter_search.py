@@ -8,6 +8,10 @@ DIR = os.path.dirname(os.path.abspath(__file__))
 
 def get_twitter_handles():
     '''
+    Process file to get rep twitter handles
+
+    Returns:
+        reps_twitter_handles (dict): mapping rep name to twitter handle
     '''
     file = os.path.join(DIR, 'illinois_reps_twitter_handles.txt')
 
@@ -24,6 +28,13 @@ def get_twitter_handles():
 
 def update_reps_dict(tweet_json, reps_name, rep_handle, reps_dict):
     '''
+    Update reps twitter dictionary
+
+    Inputs:
+        tweet_json (json): the twitter search api response json
+        reps_name (str): the name of the rep
+        rep_handle (str): rep twitter handle
+        reps_dict (dict): the dict to be updated
     '''
     rep = reps_name[0]
     if len(reps_name) != 1:  # n.b. doc gives some general twitter accounts for multiple people
@@ -42,6 +53,14 @@ def update_reps_dict(tweet_json, reps_name, rep_handle, reps_dict):
 
 def search_rep_twitter_data(limit, print_to_screen, reps_json_file='./data/reps.json'):
     '''
+    Call twitter search api with reps twitter handles
+
+    Inputs:
+        limit (int): command line argument (limits number of requests made)
+        print_to_screen (bool): for debugging/marking - check twitter response
+
+    Returns:
+        outputs json file of processed twitter responses 
     '''
     reps_dict = {}
 
