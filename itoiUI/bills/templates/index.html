@@ -8,55 +8,54 @@
 
     <!--Navbar-->
     <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
-      <!-- Navbar brand -->
-      <a class="navbar-brand" href="#">Navbar</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav"
-          aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
+        <!-- Navbar brand -->
+        <a class="navbar-brand" href="#"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav" aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
             <!-- Collapse button -->
 
-            </button>
+        </button>
 
-            <!-- Collapsible content -->
-            <div class="collapse navbar-collapse" id="basicExampleNav">
+        <!-- Collapsible content -->
+        <div class="collapse navbar-collapse" id="basicExampleNav">
 
-                <!-- Links -->
-                <ul class="navbar-nav mr-auto smooth-scroll">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#intro">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#about">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#bills">Bill Info</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#rep">Contact your Rep</a>
-                    </li>
-                </ul>
-                <!-- Links -->
-            </div>
-            <!-- Collapsible content -->
+            <!-- Links -->
+            <ul class="navbar-nav mr-auto smooth-scroll">
+                <li class="nav-item">
+                    <a class="nav-link" href="#intro">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#about">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#bills">Bill Info</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#rep">Contact your Rep</a>
+                </li>
+            </ul>
+            <!-- Links -->
+        </div>
+        <!-- Collapsible content -->
     </nav>
     <!--/.Navbar-->
 
 
     <!-- Jumbotron -->
-    <div class="jumbotron text-center blue-grey lighten-5">
-      <h2 class="card-title h2">         </h2>
-      <h2 class="card-title h2">         </h2>
-      <!-- Title -->
-      <h2 class="card-title h1">Issue to Impact</h2>
-      <hr class="hr-light">
-      <!-- Subtitle -->
-      <p class="h4">Let your state representatives know how you feel!</p>
+    <section id="intro" class="jumbotron text-center blue-grey lighten-5">
+        <h2 class="card-title h2"> </h2>
+        <h2 class="card-title h2"> </h2>
+        <!-- Title -->
+        <h2 class="card-title h1">Issue to Impact</h2>
+        <hr class="hr-light">
+        <!-- Subtitle -->
+        <p class="h4">Let your state representatives know how you feel!</p>
 
-      <!-- Grid row -->
-      <div class="row d-flex justify-content-center">
+        <!-- Grid row -->
+        <div class="row d-flex justify-content-center">
 
-      </div>
-    </div>
+        </div>
+    </section>
     <!-- Jumbotron -->
 
 </header>
@@ -80,10 +79,10 @@
 
                     <!-- Description -->
                     <p class="grey-text">We know it's hard to keep up on everything
-                      happening in the Federal legislature, let alone your state legislature.
-                    Whether you run a letter writing campaign, want to track certain issues of interest,
-                  or just want to make sure your rep understands your opinions as a constituent,
-                Issue to Impact makes tracking legislation and contacting your representative easier.</p>
+                        happening in the Federal legislature, let alone your state legislature.
+                        Whether you run a letter writing campaign, want to track certain issues of interest,
+                        or just want to make sure your rep understands your opinions as a constituent,
+                        Issue to Impact makes tracking legislation and contacting your representative easier.</p>
 
                 </div>
                 <!--Grid column-->
@@ -104,106 +103,108 @@
 
             <!--Grid row-->
             <div class="row">
-               <div class="frame">
-                   <form method="get">
-                       {% csrf_token %}
-                       <table class="form">
-                       {{ form }}
-                       </table>
-                       <input type="submit" value="Submit" />
-                   </form>
-               </div>
+                <div class="frame">
+                    <form method="get">
+                        {% csrf_token %}
+                        <table class="form">
+                            {{ form }}
+                        </table>
+                        <input type="submit" value="Submit" />
+                    </form>
+                </div>
 
 
-               {% if args %}
-               <div class="args">
-                   <pre>{{ args }}</pre>
-               </div>
-               {% endif %}
+                {% if args %}
+                <div class="args">
+                    <pre>{{ args }}</pre>
+                </div>
+                {% endif %}
 
-               {% if err %}
-               <div class="error">
-                   {{ err|safe }}
-               </div>
-               {% endif %}
-               </div>
+                {% if err %}
+                <div class="error">
+                    {{ err|safe }}
+                </div>
+                {% endif %}
+            </div>
 
 
             <div class="row">
-              <br>
-              <br>
-              <br>
-              <br>
-              <br>
-              <p class="num_results">Results: {{ num_results }}</p>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <p class="num_results">Results: {{ num_results }}</p>
             </div>
             <div class="row">
-              <br>
-              <br>
-              <br>
-              <br>
-              <!--Accordion wrapper-->
-              <div class="accordion md-accordion" id="accordionEx" role="tablist" aria-multiselectable="true">
-                {% if result != None %}
-                {% for entry in result %}
-                <!-- Accordion card -->
-                <div class="card">
+                <br>
+                <br>
+                <br>
+                <br>
+                <!--Accordion wrapper-->
+                <div class="accordion md-accordion" id="accordionEx" role="tablist" aria-multiselectable="true">
+                    {% if result != None %}
+                    {% for entry in result %}
+                    <!-- Accordion card -->
+                    <div class="card">
 
-                  <!-- Card header --> <div class="card-header" role="tab"
-                  id="heading{{ forloop.counter }}"> <a data-toggle="collapse"
-                  data-parent="#accordionEx" href="#collapse{{ forloop.counter }}"
-                  aria-expanded="true" aria-controls="collapse{{ forloop.counter }}"> <h5
-                  class="mb-0"> {{ entry.0 }}<i class="fas
-                  fa-angle-down rotate-icon"></i> </h5> </a> </div>
+                        <!-- Card header -->
+                        <div class="card-header" role="tab" id="heading{{ forloop.counter }}"> <a data-toggle="collapse" data-parent="#accordionEx" href="#collapse{{ forloop.counter }}" aria-expanded="true"
+                                aria-controls="collapse{{ forloop.counter }}">
+                                <h5 class="mb-0"> {{ entry.0 }}<i class="fas
+                  fa-angle-down rotate-icon"></i> </h5>
+                            </a> </div>
 
-                  <!-- Card body -->
-                  <div id="collapse{{ forloop.counter }}" class="collapse show"
-                  role="tabpanel" aria-labelledby="heading{{ forloop.counter }}" data-parent="#accordionEx">
-                    <div class="card-body">
-                      <!-- <div class="row"> -->
-                          <p class="text-center">
-                            <b>{{ columns.0 }}</b><br>
-                            {{ entry.0 }}<br>
+                        <!-- Card body -->
+                        <div id="collapse{{ forloop.counter }}" class="collapse show" role="tabpanel" aria-labelledby="heading{{ forloop.counter }}" data-parent="#accordionEx">
+                            <div class="card-body">
+                                <!-- <div class="row"> -->
+                                <p class="text-center">
+                                    <b>{{ columns.0 }}</b><br>
+                                    {{ entry.0 }}<br>
 
-                            <b>{{ columns.1 }}</b><br>
-                            {{ entry.1 }}<br>
+                                    <b>{{ columns.1 }}</b><br>
+                                    {{ entry.1 }}<br>
 
-                            <b>{{ columns.2 }}</b><br>
-                            {{ entry.2 }}<br>
+                                    <b>{{ columns.2 }}</b><br>
+                                    {{ entry.2 }}<br>
 
-                            <b>{{ columns.3 }}</b><br>
-                            {{ entry.3 }}<br>
+                                    <b>{{ columns.3 }}</b><br>
+                                    {{ entry.3 }}<br>
 
-                            <b>{{ columns.4 }}</b><br>
-                            {{ entry.4 }}<br>
+                                    <b>{{ columns.4 }}</b><br>
+                                    {{ entry.4 }}<br>
 
-                            <b>{{ columns.5 }}</b><br>
-                            {{ entry.5 }}<br>
-                          </p>
-                          <!-- </div> -->
-                          <div class="row">
-                          <p class="text-center">
+                                    <b>{{ columns.5 }}</b><br>
+                                    {{ entry.5 }}<br><br><br>
 
-                            <b>{{ columns.6 }}</b><br>
-                            {{ entry.6 }}<br>
+                                    <b>{{ columns.6 }}</b><br>
+                                    {{ entry.6 }}<br>
 
-                            <b>{{ columns.7 }}</b><br>
-                            {{ entry.7 }}<br>
+                                    <b>{{ columns.7 }}</b><br>
+                                    {{ entry.7 }}<br><br>
+                                    {% if entry.8 %}
+                                    <b>Relevant Tweets:</b><br>
+                                    {% for tweet in entry.8 %}
+                                    <div class="shadow-sm p-3 mb-5 bg-light rounded">
+                                        <b>Tweet Text: </b>{{ tweet.2 }}<br>
+                                        <b>Time posted: </b>{{ tweet.3 }}<br>
+                                        <b>Poster: </b>{{ tweet.4 }}<br>
+                                        <b>URL: </b>{{ tweet.5 }}<br>
+                                    </div>
+                                    {% endfor %}
+                                    {% endif %}
 
-                            <b>{{ columns.8 }}</b><br>
-                            {{ entry.8 }}<br>
-
-                          </p>
+                            </div>
+                        </div>
                     </div>
-                  </div>
-                  </div>
 
-              </div> <!-- Accordion card -->
-          {% endfor %}
+                </div> <!-- Accordion card -->
+                {% endfor %}
 
-          </div>
-          {% endif %}
-</div> <!-- Accordion wrapper -->
+            </div>
+            {% endif %}
+            <!-- Accordion wrapper -->
 
             <!--Grid row-->
 
@@ -218,52 +219,52 @@
             <!-- Heading -->
             <h2 class="mb-5 font-weight-bold text-center">Contact Info on Your Representatives</h2>
             <p class="text-center">
-              <b>Need help getting started?  We suggest:</b> <br>
-              <i>Dear Representative/Senator Last Name</i>,<br>
-               My name is <i>your first and last names</i> and I live in your
-               district.<br>
-              I am calling/writing to you today because I care deeply about the
-              issue of <i>issue</i>.  As your constituent, I am asking you to
-              vote <i>yes/no</i> on SB/HB <i>bill number</i>.  <br>
-              (Optional: Briefly provide support for your position on the issue.
-              e.g. "I believe we are all better off when all of our neighbors
-              have access to quality ....")<br>
-              Sincerely,<br>
-              <i>Your name and complete address</i>
+                <b>Need help getting started? We suggest:</b> <br>
+                <i>Dear Representative/Senator Last Name</i>,<br>
+                My name is <i>your first and last names</i> and I live in your
+                district.<br>
+                I am calling/writing to you today because I care deeply about the
+                issue of <i>issue</i>. As your constituent, I am asking you to
+                vote <i>yes/no</i> on SB/HB <i>bill number</i>. <br>
+                (Optional: Briefly provide support for your position on the issue.
+                e.g. "I believe we are all better off when all of our neighbors
+                have access to quality ....")<br>
+                Sincerely,<br>
+                <i>Your name and complete address</i>
             </p>
 
             {% if rep_dict != None %}
             {% for key, value in rep_dict.items %}
             <div class="card" style="width: 30rem center;">
                 <div class="card-body">
-                  <h5 class="card-title">{{ key }}</h5>
-                  <h6 class="card-subtitle mb-2 text-muted">{{value.chamber}}</h6>
-                  <p class="card-text">
-                    <b> Party: </b> {{ value.info.1 }}<br>
-                    <b> District: </b> {{ value.info.2 }}<br>
-                    <b> Bills Sponsored: </b> {{ value.info.3 }}<br>
-                    <b> Number of Bills Passed: </b> {{ value.info.4 }} <br>
-                    <b> Pass Rate </b> {{ value.info.21}}<br>
-                    <b> Sponsored Rank in Party: </b> {{ value.info.22 }}<br>
-                    <b> Pass Rate Rank in Party: </b> {{ value.info.23 }}<br>
-                    <b> Top bill topic for bills sponsored: </b> {{ value.info.24}}<br>
-                    <b> Address: </b><br>
-                    {{ value.contact_details.address }}<br>
-                    <b> Voice (if public): </b><br>
-                    {{ value.contact_details.voice}}<br>
-                    <b> Email (if public): </b><br>
-                    {{ value.contact_details.email }}
+                    <h5 class="card-title">{{ key }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{value.chamber}}</h6>
+                    <p class="card-text">
+                        <b> Party: </b> {{ value.info.1 }}<br>
+                        <b> District: </b> {{ value.info.2 }}<br>
+                        <b> Bills Sponsored: </b> {{ value.info.3 }}<br>
+                        <b> Number of Bills Passed: </b> {{ value.info.4 }} <br>
+                        <b> Pass Rate </b> {{ value.info.21}}<br>
+                        <b> Sponsored Rank in Party: </b> {{ value.info.22 }}<br>
+                        <b> Pass Rate Rank in Party: </b> {{ value.info.23 }}<br>
+                        <b> Top bill topic for bills sponsored: </b> {{ value.info.24}}<br>
+                        <b> Address: </b><br>
+                        {{ value.contact_details.address }}<br>
+                        <b> Voice (if public): </b><br>
+                        {{ value.contact_details.voice}}<br>
+                        <b> Email (if public): </b><br>
+                        {{ value.contact_details.email }}
 
-                  </p>
+                    </p>
                 </div>
-              </div>
+            </div>
             {% endfor %}
             {% endif %}
-                <!--Grid column-->
+            <!--Grid column-->
 
             <!--Grid row-->
 
-      </section>
+        </section>
         <!--Section: Gallery-->
 
     </div>
