@@ -201,71 +201,70 @@
 
                 </div> <!-- Accordion card -->
                 {% endfor %}
-
             </div>
             {% endif %}
-            <!-- Accordion wrapper -->
+<!-- Accordion wrapper -->
 
-            <!--Grid row-->
+    <!--Grid row-->
 
-        </section>
-        <!--Section: Examples-->
+    </section>
+    <!--Section: Examples-->
 
-        <hr class="my-5">
+    <hr class="my-5">
 
-        <!--Section: Gallery-->
-        <section id="rep">
+    <!--Section: Gallery-->
+    <section id="rep">
 
-            <!-- Heading -->
-            <h2 class="mb-5 font-weight-bold text-center">Contact Info on Your Representatives</h2>
-            <p class="text-center">
-                <b>Need help getting started? We suggest:</b> <br>
-                <i>Dear Representative/Senator Last Name</i>,<br>
-                My name is <i>your first and last names</i> and I live in your
-                district.<br>
-                I am calling/writing to you today because I care deeply about the
-                issue of <i>issue</i>. As your constituent, I am asking you to
-                vote <i>yes/no</i> on SB/HB <i>bill number</i>. <br>
-                (Optional: Briefly provide support for your position on the issue.
-                e.g. "I believe we are all better off when all of our neighbors
-                have access to quality ....")<br>
-                Sincerely,<br>
-                <i>Your name and complete address</i>
-            </p>
+        <!-- Heading -->
+        <h2 class="mb-5 font-weight-bold text-center">Contact Info on Your Representatives</h2>
+        <p class="text-center">
+            <b>Need help getting started? We suggest:</b> <br>
+            <i>Dear Representative/Senator Last Name</i>,<br>
+            My name is <i>your first and last names</i> and I live in your
+            district.<br>
+            I am calling/writing to you today because I care deeply about the
+            issue of <i>issue</i>. As your constituent, I am asking you to
+            vote <i>yes/no</i> on SB/HB <i>bill number</i>. <br>
+            (Optional: Briefly provide support for your position on the issue.
+            e.g. "I believe we are all better off when all of our neighbors
+            have access to quality ....")<br>
+            Sincerely,<br>
+            <i>Your name and complete address</i>
+        </p>
 
-            {% if rep_dict != None %}
-            {% for key, value in rep_dict.items %}
-            <div class="card" style="width: 30rem center;">
-                <div class="card-body">
-                    <h5 class="card-title">{{ key }}</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">{{value.chamber}}</h6>
-                    <p class="card-text">
-                        <b> Party: </b> {{ value.info.1 }}<br>
-                        <b> District: </b> {{ value.info.2 }}<br>
-                        <b> Bills Sponsored: </b> {{ value.info.3 }}<br>
-                        <b> Number of Bills Passed: </b> {{ value.info.4 }} <br>
-                        <b> Pass Rate </b> {{ value.info.21}}<br>
-                        <b> Sponsored Rank in Party: </b> {{ value.info.22 }}<br>
-                        <b> Pass Rate Rank in Party: </b> {{ value.info.23 }}<br>
-                        <b> Top bill topic for bills sponsored: </b> {{ value.info.24}}<br>
-                        <b> Address: </b><br>
-                        {{ value.contact_details.address }}<br>
-                        <b> Voice (if public): </b><br>
-                        {{ value.contact_details.voice}}<br>
-                        <b> Email (if public): </b><br>
-                        {{ value.contact_details.email }}
+        {% if rep_dict != None %}
+        {% for key, value in rep_dict.items %}
+        <div class="card" style="width: 30rem center;">
+            <div class="card-body">
+                <h5 class="card-title">{{ key }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{value.chamber}}</h6>
+                <p class="card-text">
+                    <b> Party: </b> {{ value.info.1 }}<br>
+                    <b> District: </b> {{ value.info.2 }}<br>
+                    <b> Bills Sponsored: </b> {{ value.info.3 }}<br>
+                    <b> Number of Bills Passed: </b> {{ value.info.4 }} <br>
+                    <b> Pass Rate </b> {{ value.info.21}}<br>
+                    <b> Sponsored Rank in Party: </b> {{ value.info.22 }}<br>
+                    <b> Pass Rate Rank in Party: </b> {{ value.info.23 }}<br>
+                    <b> Top bill topic for bills sponsored: </b> {{ value.info.24}}<br>
+                    <b> Address: </b><br>
+                    {{ value.contact_details.address }}<br>
+                    <b> Voice (if public): </b><br>
+                    {{ value.contact_details.voice}}<br>
+                    <b> Email (if public): </b><br>
+                    {{ value.contact_details.email }}
 
-                    </p>
-                </div>
+                </p>
             </div>
-            {% endfor %}
-            {% endif %}
-            <!--Grid column-->
+        </div>
+        {% endfor %}
+        {% endif %}
+        <!--Grid column-->
 
-            <!--Grid row-->
+        <!--Grid row-->
 
-        </section>
-        <!--Section: Gallery-->
+    </section>
+    <!--Section: Gallery-->
 
     </div>
 </main>

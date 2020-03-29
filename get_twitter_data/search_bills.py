@@ -83,7 +83,9 @@ def save_to_json_file(dict, output_filename):
     with open(output_filename, 'w') as output_file:
         json.dump(dict, output_file)
 
-def search_bill_tweets(bill_info_file, limit, print_to_screen, tweet_json_file='data/bill_info.json', users_json_file='data/users_info.json'):
+def search_bill_tweets(bill_info_file, limit, print_to_screen,
+                        tweet_json_file='data/bill_info.json',
+                        users_json_file='data/users_info.json'):
     '''
     Search tweets referencing bill numbers in illinois
     Inputs:
